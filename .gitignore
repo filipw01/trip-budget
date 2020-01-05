@@ -64,3 +64,4 @@ node_modules/
 # dotenv environment variables file
 .env
 functions/trip-budget-27472.json
+functions/production-users.json
