@@ -11,8 +11,10 @@ const trips: Reducer<any, tripsReducerArguments> = (
   { type, payload }
 ): Array<any> => {
   switch (type) {
+    case ActionTypes.START_LOADING_TRIPS:
+      return { ...state, tripsLoading: true };
     case ActionTypes.GET_TRIPS:
-      return { ...state, trips: payload };
+      return { ...state, trips: payload, tripsLoading: false };
     case ActionTypes.ADD_TRIP:
       return { ...state, trips: [...state.trips, payload] };
     case ActionTypes.DELETE_TRIP:

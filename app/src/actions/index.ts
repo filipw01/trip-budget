@@ -4,7 +4,8 @@ import firebase from "firebase/app";
 export enum ActionTypes {
   ADD_TRIP = "ADD_TRIP",
   DELETE_TRIP = "DELETE_TRIP",
-  GET_TRIPS = "GET_TRIPS"
+  GET_TRIPS = "GET_TRIPS",
+  START_LOADING_TRIPS = "START_LOADING_TRIPS"
 }
 
 export const addTrip = (payload: any) => ({
@@ -18,6 +19,9 @@ export const getTrips = (payload: any) => async (dispatch: Dispatch<any>) => {
   } catch (error) {
     console.error(error);
   }
+  dispatch({
+    type: ActionTypes.START_LOADING_TRIPS
+  });
   const data = await fetch(
     "https://us-central1-trip-budget-27472.cloudfunctions.net/app/getTrips",
     {
@@ -26,7 +30,7 @@ export const getTrips = (payload: any) => async (dispatch: Dispatch<any>) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${idToken}`
       },
-      method: "GET",
+      method: "GET"
     }
   );
   dispatch({
