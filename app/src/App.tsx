@@ -31,7 +31,7 @@ const App: React.FC<Props> = ({ getTrips }) => {
   return (
     <div>
       <header className="flex flex-col">
-        <BaseButton clickHandler={signIn}>Sign in</BaseButton>
+        <BaseButton cssClasses="w-24 ml-auto mt-4 mr-4" clickHandler={signIn}>Sign in</BaseButton>
         <NewTrip />
         <TripsList />
       </header>

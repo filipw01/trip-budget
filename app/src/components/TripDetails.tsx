@@ -1,4 +1,5 @@
 import React from "react";
+import { Expense } from "../reducers";
 
 interface Props {
   trip: {
@@ -6,7 +7,7 @@ interface Props {
     dateStart: string;
     dateEnd: string;
     town: string;
-    expenses: { name: string }[];
+    expenses: { name: string; items?: Expense[] }[];
   };
 }
 
@@ -17,7 +18,12 @@ const TripDetails: React.FC<Props> = ({ trip }) => {
       <div>{trip.dateStart}</div>
       <div>{trip.dateEnd}</div>
       <div>{trip.town}</div>
-      {trip.expenses.map(expense => expense.name)}
+      {trip.expenses.map(expense => (
+        <div>
+          {expense.name}
+          <p>{expense?.items}</p>
+        </div>
+      ))}
     </div>
   );
 };
