@@ -22,19 +22,19 @@ export enum ActionTypes {
 
 async function getToken() {
   try {
-    return await firebase?.auth()?.currentUser?.getIdToken();
+    return firebase?.auth()?.currentUser?.getIdToken();
   } catch (error) {
     console.error(error);
   }
 }
 
-const apiHeaders = {
+const getApiHeaders = async () => ({
   mode: "cors" as "cors",
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${getToken()}`
+    Authorization: `Bearer ${await getToken()}`
   }
-};
+});
 
 export const getTrips = () => async (dispatch: Dispatch<any>) => {
   dispatch({
@@ -42,7 +42,7 @@ export const getTrips = () => async (dispatch: Dispatch<any>) => {
   });
   try {
     const data = await fetch(`${baseUrl}/getTrips`, {
-      ...apiHeaders,
+      ...(await getApiHeaders()),
       method: "GET"
     });
     dispatch({
@@ -64,7 +64,7 @@ export const deleteTrip = (tripName: string) => async (
   });
   try {
     await fetch(`${baseUrl}/deleteTrip`, {
-      ...apiHeaders,
+      ...(await getApiHeaders()),
       method: "DELETE",
       body: JSON.stringify({
         tripName
@@ -88,7 +88,7 @@ export const createTrip = (payload: any) => async (dispatch: Dispatch<any>) => {
   });
   try {
     await fetch(`${baseUrl}/createTrip`, {
-      ...apiHeaders,
+      ...(await getApiHeaders()),
       method: "PUT",
       body: JSON.stringify({
         tripName,
@@ -129,7 +129,7 @@ export const createExpense = (payload: any) => async (
   });
   try {
     await fetch(`${baseUrl}/createExpense`, {
-      ...apiHeaders,
+      ...(await getApiHeaders()),
       method: "PUT",
       body: JSON.stringify({
         tripName,
@@ -168,7 +168,7 @@ export const deleteExpense = (payload: any) => async (
   });
   try {
     await fetch(`${baseUrl}/deleteExpense`, {
-      ...apiHeaders,
+      ...(await getApiHeaders()),
       method: "DELETE",
       body: JSON.stringify({
         tripName,

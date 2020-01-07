@@ -8,7 +8,7 @@ interface Props {
 }
 
 const LabeledInput: React.FC<Props> = forwardRef(
-  ({ type = "text", label, defaultValue }, ref?) => {
+  ({ type = "text", label, defaultValue = "" }, ref?) => {
     const [value, setValue] = useState(defaultValue);
     return (
       <label className="block">
