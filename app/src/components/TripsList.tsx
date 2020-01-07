@@ -44,7 +44,7 @@ const TripsList: React.FC<Props> = ({
                     deleteTrip(trip.tripName) && e.stopPropagation()
                   }
                 >
-                  Delete Trip
+                  Delete
                 </BaseButton>
               </li>
             ))}

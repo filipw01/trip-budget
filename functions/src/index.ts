@@ -24,6 +24,21 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
+app.get("/getTrips", (req: any, res: any) => {
+  db.collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
+    .get()
+    .then((snapshot: any) => {
+      const documents: Array<Object> = [];
+      snapshot.forEach((doc: any) => {
+        documents.push(doc.data());
+      });
+      res.send(documents);
+    })
+    .catch((err: any) => {
+      res.send("Error getting documents", err);
+    });
+});
+
 app.put("/createTrip", async (req: any, res: any) => {
   const { tripName, dateStart, dateEnd, town } = req.body;
   const docRef = db
@@ -54,21 +69,6 @@ app.delete("/deleteTrip", async (req: any, res: any) => {
   res.send(deletedTrip);
 });
 
-app.get("/getTrips", (req: any, res: any) => {
-  db.collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
-    .get()
-    .then((snapshot: any) => {
-      const documents: Array<Object> = [];
-      snapshot.forEach((doc: any) => {
-        documents.push(doc.data());
-      });
-      res.send(documents);
-    })
-    .catch((err: any) => {
-      res.send("Error getting documents", err);
-    });
-});
-
 app.patch("/updateTrip", async (req: any, res: any) => {
   const { tripName, dateStart, dateEnd, town, expenses } = req.body;
   const docRef = db
@@ -85,19 +85,18 @@ app.patch("/updateTrip", async (req: any, res: any) => {
 });
 
 app.put("/createExpense", async (req: any, res: any) => {
-  const { tripName, date, title, description, value, category } = req.body;
+  const { tripName, date, title, description, price, category } = req.body;
   const docRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
     .doc(tripName);
   let oldTripData: any;
   docRef.get().then((doc: any) => {
     oldTripData = doc.data();
-
     const newTripData = {};
     addIfDefined(newTripData, date, "date");
     addIfDefined(newTripData, title, "title");
     addIfDefined(newTripData, description, "description");
-    addIfDefined(newTripData, value, "value");
+    addIfDefined(newTripData, price, "price");
     docRef
       .update({
         expenses: [
@@ -105,6 +104,34 @@ app.put("/createExpense", async (req: any, res: any) => {
             expense.name === category
               ? { ...expense, values: [...expense.values, newTripData] }
               : expense
+          )
+        ]
+      })
+      .then((result: any) => res.send(result));
+  });
+});
+
+app.delete("/deleteExpense", async (req: any, res: any) => {
+  const { tripName, category, expenseName } = req.body;
+  const docRef = db
+    .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
+    .doc(tripName);
+
+  let oldTripData: any;
+  docRef.get().then((doc: any) => {
+    oldTripData = doc.data();
+    docRef
+      .update({
+        expenses: [
+          ...oldTripData.expenses.map((expenseCategory: any) =>
+            expenseCategory.name === category
+              ? {
+                  ...expenseCategory,
+                  values: expenseCategory.values.filter(
+                    (expense: { title: string }) => expense.title !== expenseName
+                  )
+                }
+              : expenseCategory
           )
         ]
       })

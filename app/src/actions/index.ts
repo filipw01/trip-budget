@@ -1,43 +1,50 @@
 import { Dispatch } from "react";
 import firebase from "firebase/app";
+import { baseUrl } from "../config";
 
 export enum ActionTypes {
   CREATE_TRIP_REQUESTED = "CREATE_TRIP_REQUESTED",
   CREATE_TRIP_FAILED = "CREATE_TRIP_FAILED",
   CREATE_TRIP_SUCCEEDED = "CREATE_TRIP_SUCCEEDED",
-  CREATE_EXPENSE_REQUESTED = "CREATE_EXPENSE_REQUESTED",
-  CREATE_EXPENSE_FAILED = "CREATE_EXPENSE_FAILED",
-  CREATE_EXPENSE_SUCCEEDED = "CREATE_EXPENSE_SUCCEEDED",
   DELETE_TRIP_REQUESTED = "DELETE_TRIP_REQUESTED",
   DELETE_TRIP_FAILED = "DELETE_TRIP_FAILED",
   DELETE_TRIP_SUCCEEDED = "DELETE_TRIP_SUCCEEDED",
   GET_TRIPS_REQUESTED = "GET_TRIPS_REQUESTED",
   GET_TRIPS_FAILED = "GET_TRIPS_FAILED",
-  GET_TRIPS_SUCCEEDED = "GET_TRIPS_SUCCEEDED"
+  GET_TRIPS_SUCCEEDED = "GET_TRIPS_SUCCEEDED",
+  CREATE_EXPENSE_REQUESTED = "CREATE_EXPENSE_REQUESTED",
+  CREATE_EXPENSE_FAILED = "CREATE_EXPENSE_FAILED",
+  CREATE_EXPENSE_SUCCEEDED = "CREATE_EXPENSE_SUCCEEDED",
+  DELETE_EXPENSE_REQUESTED = "DELETE_EXPENSE_REQUESTED",
+  DELETE_EXPENSE_FAILED = "DELETE_EXPENSE_FAILED",
+  DELETE_EXPENSE_SUCCEEDED = "DELETE_EXPENSE_SUCCEEDED"
 }
 
-export const getTrips = (payload: any) => async (dispatch: Dispatch<any>) => {
-  let idToken;
+async function getToken() {
   try {
-    idToken = await firebase?.auth()?.currentUser?.getIdToken();
+    return await firebase?.auth()?.currentUser?.getIdToken();
   } catch (error) {
     console.error(error);
   }
+}
+
+const apiHeaders = {
+  mode: "cors" as "cors",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getToken()}`
+  }
+};
+
+export const getTrips = () => async (dispatch: Dispatch<any>) => {
   dispatch({
     type: ActionTypes.GET_TRIPS_REQUESTED
   });
   try {
-    const data = await fetch(
-      "https://us-central1-trip-budget-27472.cloudfunctions.net/app/getTrips",
-      {
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`
-        },
-        method: "GET"
-      }
-    );
+    const data = await fetch(`${baseUrl}/getTrips`, {
+      ...apiHeaders,
+      method: "GET"
+    });
     dispatch({
       type: ActionTypes.GET_TRIPS_SUCCEEDED,
       payload: await data.json()
@@ -52,30 +59,17 @@ export const getTrips = (payload: any) => async (dispatch: Dispatch<any>) => {
 export const deleteTrip = (tripName: string) => async (
   dispatch: Dispatch<any>
 ) => {
-  let idToken;
-  try {
-    idToken = await firebase?.auth()?.currentUser?.getIdToken();
-  } catch (error) {
-    console.error(error);
-  }
   dispatch({
     type: ActionTypes.DELETE_TRIP_REQUESTED
   });
   try {
-    await fetch(
-      "https://us-central1-trip-budget-27472.cloudfunctions.net/app/deleteTrip",
-      {
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`
-        },
-        method: "DELETE",
-        body: JSON.stringify({
-          tripName
-        })
-      }
-    );
+    await fetch(`${baseUrl}/deleteTrip`, {
+      ...apiHeaders,
+      method: "DELETE",
+      body: JSON.stringify({
+        tripName
+      })
+    });
     dispatch({
       type: ActionTypes.DELETE_TRIP_SUCCEEDED,
       payload: tripName
@@ -88,39 +82,26 @@ export const deleteTrip = (tripName: string) => async (
   }
 };
 export const createTrip = (payload: any) => async (dispatch: Dispatch<any>) => {
-  let idToken;
   const { tripName, dateStart, dateEnd, town } = payload;
-  try {
-    idToken = await firebase?.auth()?.currentUser?.getIdToken();
-  } catch (error) {
-    console.error(error);
-  }
   dispatch({
     type: ActionTypes.CREATE_TRIP_REQUESTED
   });
   try {
-    await fetch(
-      "https://us-central1-trip-budget-27472.cloudfunctions.net/app/createTrip",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`
-        },
-        mode: "cors",
-        method: "PUT",
-        body: JSON.stringify({
-          tripName,
-          dateStart,
-          dateEnd,
-          town,
-          expenses: [
-            { name: "accommodations", values: [] },
-            { name: "food", values: [] },
-            { name: "travel", values: [] }
-          ]
-        })
-      }
-    );
+    await fetch(`${baseUrl}/createTrip`, {
+      ...apiHeaders,
+      method: "PUT",
+      body: JSON.stringify({
+        tripName,
+        dateStart,
+        dateEnd,
+        town,
+        expenses: [
+          { name: "accommodations", values: [] },
+          { name: "food", values: [] },
+          { name: "travel", values: [] }
+        ]
+      })
+    });
     dispatch({
       type: ActionTypes.CREATE_TRIP_SUCCEEDED,
       payload: {
@@ -139,40 +120,26 @@ export const createTrip = (payload: any) => async (dispatch: Dispatch<any>) => {
     });
   }
 };
-
 export const createExpense = (payload: any) => async (
   dispatch: Dispatch<any>
 ) => {
-  let idToken;
-  const { date, title, description, value, category, tripName } = payload;
-  try {
-    idToken = await firebase?.auth()?.currentUser?.getIdToken();
-  } catch (error) {
-    console.error(error);
-  }
+  const { tripName, date, title, description, price, category } = payload;
   dispatch({
     type: ActionTypes.CREATE_EXPENSE_REQUESTED
   });
   try {
-    await fetch(
-      "https://us-central1-trip-budget-27472.cloudfunctions.net/app/createExpense",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`
-        },
-        mode: "cors",
-        method: "PUT",
-        body: JSON.stringify({
-          tripName,
-          date,
-          title,
-          description,
-          value,
-          category
-        })
-      }
-    );
+    await fetch(`${baseUrl}/createExpense`, {
+      ...apiHeaders,
+      method: "PUT",
+      body: JSON.stringify({
+        tripName,
+        date,
+        title,
+        description,
+        price,
+        category
+      })
+    });
     dispatch({
       type: ActionTypes.CREATE_EXPENSE_SUCCEEDED,
       payload: {
@@ -180,7 +147,7 @@ export const createExpense = (payload: any) => async (
         date,
         title,
         description,
-        value,
+        price,
         category
       }
     });
@@ -188,6 +155,35 @@ export const createExpense = (payload: any) => async (
     dispatch({
       type: ActionTypes.CREATE_EXPENSE_FAILED,
       payload: `Couldn't create ${title} trip`
+    });
+  }
+};
+
+export const deleteExpense = (payload: any) => async (
+  dispatch: Dispatch<any>
+) => {
+  const { tripName, category, expenseName } = payload;
+  dispatch({
+    type: ActionTypes.DELETE_EXPENSE_REQUESTED
+  });
+  try {
+    await fetch(`${baseUrl}/deleteExpense`, {
+      ...apiHeaders,
+      method: "DELETE",
+      body: JSON.stringify({
+        tripName,
+        category,
+        expenseName
+      })
+    });
+    dispatch({
+      type: ActionTypes.DELETE_EXPENSE_SUCCEEDED,
+      payload: { tripName, category, expenseName }
+    });
+  } catch {
+    dispatch({
+      type: ActionTypes.DELETE_EXPENSE_FAILED,
+      payload: `Couldn't delete ${expenseName} expense in ${tripName} trip`
     });
   }
 };

@@ -23,10 +23,10 @@ const App: React.FC<Props> = ({ getTrips }) => {
     firebase
       .auth()
       .signInWithPopup(provider)
+      .then(() => getTrips())
       .catch(function(error) {
         console.error(error);
       });
-    getTrips();
   };
 
   return (

@@ -21,8 +21,8 @@ const NewTrip: React.FC<Props> = ({ createTrip, creatingTrip }) => {
     <LoadingOverlay active={creatingTrip}>
       <div className="flex flex-col items-center mb-4">
         <LabeledInput label="Trip name" type="text" ref={nameField} />
-        <LabeledInput label="Start date" type="date" ref={startDateField} />
-        <LabeledInput label="End date" type="date" ref={endDateField} />
+        <LabeledInput label="Start date" type="date" ref={startDateField} defaultValue={"2020-12-20"} />
+        <LabeledInput label="End date" type="date" ref={endDateField} defaultValue={"2020-12-20"} />
         <LabeledInput label="Town" type="text" ref={townField} />
 
         <BaseButton
