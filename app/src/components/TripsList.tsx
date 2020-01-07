@@ -5,21 +5,13 @@ import BaseButton from "./BaseButton";
 import TripDetails from "./TripDetails";
 import { Store } from "../reducers";
 import LoadingOverlay from "./LoadingOverlay";
-
+import { Trip } from "../reducers";
 interface Props {
   trips: Array<Object | never>;
   tripsLoading: boolean;
   deletingTrip: { isDeleting: boolean; tripName: string };
   getTrips: Function;
   deleteTrip: Function;
-}
-
-interface Trip {
-  tripName: string;
-  dateStart: string;
-  dateEnd: string;
-  town: string;
-  expenses: { name: string }[];
 }
 
 const TripsList: React.FC<Props> = ({

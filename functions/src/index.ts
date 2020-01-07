@@ -35,7 +35,11 @@ app.put("/createTrip", async (req: any, res: any) => {
     dateStart,
     dateEnd,
     town,
-    expenses: [{ name: "accommodation" }, { name: "food" }, { name: "travel" }]
+    expenses: [
+      { name: "accommodation", values: [] },
+      { name: "food", values: [] },
+      { name: "travel", values: [] }
+    ]
   });
   res.send(newTrip);
 });
@@ -78,6 +82,34 @@ app.patch("/updateTrip", async (req: any, res: any) => {
   addIfDefined(updateData, expenses, "expenses");
   const trip = await docRef.update(updateData);
   res.send(trip);
+});
+
+app.put("/createExpense", async (req: any, res: any) => {
+  const { tripName, date, title, description, value, category } = req.body;
+  const docRef = db
+    .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
+    .doc(tripName);
+  let oldTripData: any;
+  docRef.get().then((doc: any) => {
+    oldTripData = doc.data();
+
+    const newTripData = {};
+    addIfDefined(newTripData, date, "date");
+    addIfDefined(newTripData, title, "title");
+    addIfDefined(newTripData, description, "description");
+    addIfDefined(newTripData, value, "value");
+    docRef
+      .update({
+        expenses: [
+          ...oldTripData.expenses.map((expense: any) =>
+            expense.name === category
+              ? { ...expense, values: [...expense.values, newTripData] }
+              : expense
+          )
+        ]
+      })
+      .then((result: any) => res.send(result));
+  });
 });
 
 exports.app = functions.https.onRequest(app);

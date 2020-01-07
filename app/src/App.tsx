@@ -7,6 +7,7 @@ import firebaseConfig from "./firebaseConfig";
 import { getTrips } from "./actions";
 import { connect } from "react-redux";
 import NewTrip from "./components/NewTrip";
+import NewExpense from "./components/NewExpense";
 
 interface Props {
   getTrips: Function;
@@ -31,8 +32,11 @@ const App: React.FC<Props> = ({ getTrips }) => {
   return (
     <div>
       <header className="flex flex-col">
-        <BaseButton cssClasses="w-24 ml-auto mt-4 mr-4" clickHandler={signIn}>Sign in</BaseButton>
+        <BaseButton cssClasses="w-24 ml-auto mt-4 mr-4" clickHandler={signIn}>
+          Sign in
+        </BaseButton>
         <NewTrip />
+        <NewExpense />
         <TripsList />
       </header>
     </div>

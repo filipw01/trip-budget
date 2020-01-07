@@ -1,14 +1,8 @@
 import React from "react";
-import { Expense } from "../reducers";
+import { Trip, ExpenseCategory, Expense } from "../reducers";
 
 interface Props {
-  trip: {
-    tripName: string;
-    dateStart: string;
-    dateEnd: string;
-    town: string;
-    expenses: { name: string; items?: Expense[] }[];
-  };
+  trip: Trip;
 }
 
 const TripDetails: React.FC<Props> = ({ trip }) => {
@@ -18,10 +12,12 @@ const TripDetails: React.FC<Props> = ({ trip }) => {
       <div>{trip.dateStart}</div>
       <div>{trip.dateEnd}</div>
       <div>{trip.town}</div>
-      {trip.expenses.map(expense => (
+      {trip.expenses.map((expenseCategory: ExpenseCategory) => (
         <div>
-          {expense.name}
-          <p>{expense?.items}</p>
+          {expenseCategory.name}
+          <p>
+            {expenseCategory.values.map((expense: Expense) => expense.title)}
+          </p>
         </div>
       ))}
     </div>

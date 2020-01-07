@@ -5,6 +5,9 @@ export enum ActionTypes {
   CREATE_TRIP_REQUESTED = "CREATE_TRIP_REQUESTED",
   CREATE_TRIP_FAILED = "CREATE_TRIP_FAILED",
   CREATE_TRIP_SUCCEEDED = "CREATE_TRIP_SUCCEEDED",
+  CREATE_EXPENSE_REQUESTED = "CREATE_EXPENSE_REQUESTED",
+  CREATE_EXPENSE_FAILED = "CREATE_EXPENSE_FAILED",
+  CREATE_EXPENSE_SUCCEEDED = "CREATE_EXPENSE_SUCCEEDED",
   DELETE_TRIP_REQUESTED = "DELETE_TRIP_REQUESTED",
   DELETE_TRIP_FAILED = "DELETE_TRIP_FAILED",
   DELETE_TRIP_SUCCEEDED = "DELETE_TRIP_SUCCEEDED",
@@ -111,9 +114,9 @@ export const createTrip = (payload: any) => async (dispatch: Dispatch<any>) => {
           dateEnd,
           town,
           expenses: [
-            { name: "accommodations" },
-            { name: "food" },
-            { name: "travel" }
+            { name: "accommodations", values: [] },
+            { name: "food", values: [] },
+            { name: "travel", values: [] }
           ]
         })
       }
@@ -123,9 +126,9 @@ export const createTrip = (payload: any) => async (dispatch: Dispatch<any>) => {
       payload: {
         ...payload,
         expenses: [
-          { name: "accommodations" },
-          { name: "food" },
-          { name: "travel" }
+          { name: "accommodations", values: [] },
+          { name: "food", values: [] },
+          { name: "travel", values: [] }
         ]
       }
     });
@@ -133,6 +136,58 @@ export const createTrip = (payload: any) => async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ActionTypes.CREATE_TRIP_FAILED,
       payload: `Couldn't create ${tripName} trip`
+    });
+  }
+};
+
+export const createExpense = (payload: any) => async (
+  dispatch: Dispatch<any>
+) => {
+  let idToken;
+  const { date, title, description, value, category, tripName } = payload;
+  try {
+    idToken = await firebase?.auth()?.currentUser?.getIdToken();
+  } catch (error) {
+    console.error(error);
+  }
+  dispatch({
+    type: ActionTypes.CREATE_EXPENSE_REQUESTED
+  });
+  try {
+    await fetch(
+      "https://us-central1-trip-budget-27472.cloudfunctions.net/app/createExpense",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`
+        },
+        mode: "cors",
+        method: "PUT",
+        body: JSON.stringify({
+          tripName,
+          date,
+          title,
+          description,
+          value,
+          category
+        })
+      }
+    );
+    dispatch({
+      type: ActionTypes.CREATE_EXPENSE_SUCCEEDED,
+      payload: {
+        tripName,
+        date,
+        title,
+        description,
+        value,
+        category
+      }
+    });
+  } catch {
+    dispatch({
+      type: ActionTypes.CREATE_EXPENSE_FAILED,
+      payload: `Couldn't create ${title} trip`
     });
   }
 };
