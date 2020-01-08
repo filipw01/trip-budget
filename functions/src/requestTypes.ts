@@ -4,7 +4,9 @@ import {
   DeleteExpenseBody,
   UpdateExpenseBody,
   GetTripsBody,
-  CreateTripBody
+  CreateTripBody,
+  UpdateTripBody,
+  DeleteTripBody
 } from "./generalTypes";
 
 export interface RequestWithCredentials extends Request {
@@ -32,9 +34,9 @@ export interface CreateTripRequest extends RequestWithCredentials {
 }
 
 export interface DeleteTripRequest extends RequestWithCredentials {
-  body: DeleteTripRequest;
+  body: DeleteTripBody;
 }
 
 export interface UpdateTripRequest extends RequestWithCredentials {
-  body: UpdateTripRequest;
+  body: UpdateTripBody;
 }

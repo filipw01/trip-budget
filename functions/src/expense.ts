@@ -6,10 +6,10 @@ import {
 import { Response } from "express";
 import { ExpenseCategory } from "./generalTypes";
 const express = require("express");
-const expense = express.Router();
+const expenseRouter = express.Router();
 const { db, addIfDefined } = require("./index");
 
-expense.put("/", async (req: CreateExpenseRequest, res: Response) => {
+expenseRouter.put("/", async (req: CreateExpenseRequest, res: Response) => {
   const { tripName, date, title, description, price, category } = req.body;
   const docRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
@@ -39,7 +39,7 @@ expense.put("/", async (req: CreateExpenseRequest, res: Response) => {
   });
 });
 
-expense.delete("/", async (req: DeleteExpenseRequest, res: Response) => {
+expenseRouter.delete("/", async (req: DeleteExpenseRequest, res: Response) => {
   const { tripName, category, expenseName } = req.body;
   const docRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
@@ -56,7 +56,7 @@ expense.delete("/", async (req: DeleteExpenseRequest, res: Response) => {
               ? {
                   ...expenseCategory,
                   values: expenseCategory.values.filter(
-                    expense => expense.title !== expenseName
+                    (expense) => expense.title !== expenseName
                   )
                 }
               : expenseCategory
@@ -67,7 +67,7 @@ expense.delete("/", async (req: DeleteExpenseRequest, res: Response) => {
   });
 });
 
-expense.patch("/", async (req: UpdateExpenseRequest, res: Response) => {
+expenseRouter.patch("/", async (req: UpdateExpenseRequest, res: Response) => {
   const {
     tripName,
     category,
@@ -105,4 +105,4 @@ expense.patch("/", async (req: UpdateExpenseRequest, res: Response) => {
   });
 });
 
-export default expense;
+export default expenseRouter;

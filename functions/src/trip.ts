@@ -6,10 +6,10 @@ import {
 } from "./requestTypes";
 import { Response } from "express";
 const express = require("express");
-const trip = express.Router();
+const tripRouter = express.Router();
 const { db, addIfDefined } = require("./index");
 
-trip.get("/", (req: GetTripsRequest, res: Response) => {
+tripRouter.get("/", (req: GetTripsRequest, res: Response) => {
   db.collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
     .get()
     .then((snapshot: any) => {
@@ -24,7 +24,7 @@ trip.get("/", (req: GetTripsRequest, res: Response) => {
     });
 });
 
-trip.put("/", async (req: CreateTripRequest, res: Response) => {
+tripRouter.put("/", async (req: CreateTripRequest, res: Response) => {
   const { tripName, dateStart, dateEnd, town } = req.body;
   const docRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
@@ -44,7 +44,7 @@ trip.put("/", async (req: CreateTripRequest, res: Response) => {
   res.send(newTrip);
 });
 
-trip.delete("/", async (req: DeleteTripRequest, res: Response) => {
+tripRouter.delete("/", async (req: DeleteTripRequest, res: Response) => {
   const { tripName } = req.body;
   const deletedTrip = await db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
@@ -54,7 +54,7 @@ trip.delete("/", async (req: DeleteTripRequest, res: Response) => {
   res.send(deletedTrip);
 });
 
-trip.patch("/", async (req: UpdateTripRequest, res: Response) => {
+tripRouter.patch("/", async (req: UpdateTripRequest, res: Response) => {
   const {
     tripName,
     dateStart,
@@ -76,4 +76,4 @@ trip.patch("/", async (req: UpdateTripRequest, res: Response) => {
   res.send(trip);
 });
 
-export default trip;
+export default tripRouter;
