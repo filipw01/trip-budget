@@ -1,39 +1,12 @@
 import { ActionTypes } from "../actions/index";
 import { Reducer } from "react";
-
-export interface Expense {
-  title: string;
-  price: string;
-  description: string;
-  date: string;
-}
-export interface ExpenseCategory {
-  name: string;
-  values: Array<Expense>;
-}
-
-export interface Trip {
-  tripName: string;
-  dateStart: string;
-  dateEnd: string;
-  town: string;
-  expenses: Array<ExpenseCategory>;
-}
-export interface Store {
-  tripsLoading: boolean;
-  creatingTrip: boolean;
-  creatingExpense: boolean;
-  deletingTrip: {
-    isDeleting: boolean;
-    tripName: string;
-  };
-  trips: Array<Trip>;
-  errorMessage?: string;
-}
-interface tripsReducerArguments {
-  type: ActionTypes;
-  payload: any;
-}
+import {
+  tripsReducerArguments,
+  Store,
+  Trip,
+  Expense,
+  ExpenseCategory
+} from "../types";
 
 const trips: Reducer<any, tripsReducerArguments> = (
   state = {
@@ -70,8 +43,8 @@ const trips: Reducer<any, tripsReducerArguments> = (
     case ActionTypes.DELETE_TRIP_SUCCEEDED:
       return {
         ...state,
-        trips: state.trips.filter((trip: any) => {
-          return trip.tripName !== payload;
+        trips: state.trips.filter((trip: Trip) => {
+          return trip.tripName !== payload.tripName;
         }),
         deletingTrip: {
           isDeleting: false

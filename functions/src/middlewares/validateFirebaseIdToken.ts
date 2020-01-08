@@ -3,7 +3,7 @@ const productionUsers = require("../../production-users.json");
 
 export const validateFirebaseIdToken = async (
   req: any,
-  res: any,
+  _res: any,
   next: any
 ) => {
   if (
@@ -12,10 +12,10 @@ export const validateFirebaseIdToken = async (
     !(req.cookies && req.cookies.__session)
   ) {
     req.user = { name: "Anonymous" };
-    next();
-    console.error(
+    console.log(
       "No Firebase ID token was passed as a Bearer token in the Authorization header."
     );
+    next();
     return;
   }
 
@@ -24,11 +24,9 @@ export const validateFirebaseIdToken = async (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer ")
   ) {
-    console.log('Found "Authorization" header');
     // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split("Bearer ")[1];
   } else if (req.cookies) {
-    console.log('Found "__session" cookie');
     // Read the ID Token from cookie.
     idToken = req.cookies.__session;
   } else {
@@ -48,8 +46,8 @@ export const validateFirebaseIdToken = async (
     return;
   } catch (error) {
     req.user = { name: "Anonymous" };
+    console.log("Proceeded as anonymous");
     next();
-    console.error("Error while verifying Firebase ID token:", error);
     return;
   }
 };

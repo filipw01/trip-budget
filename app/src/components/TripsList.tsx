@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { getTrips, deleteTrip } from "../actions";
 import BaseButton from "./BaseButton";
 import TripDetails from "./TripDetails";
-import { Store } from "../reducers";
 import LoadingOverlay from "./LoadingOverlay";
-import { Trip } from "../reducers";
+import { Trip, Store } from "../types";
 interface Props {
   trips: Array<Object | never>;
   tripsLoading: boolean;

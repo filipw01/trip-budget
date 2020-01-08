@@ -4,7 +4,7 @@ import LoadingOverlay from "./LoadingOverlay";
 import LabeledInput from "./LabeledInput";
 import { connect } from "react-redux";
 import { createExpense } from "../actions";
-import { Store, Trip } from "../reducers";
+import { Store, Trip } from "../types";
 import LabeledSelect from "./LabeledSelect";
 
 interface Props {
@@ -48,7 +48,12 @@ const NewExpense: React.FC<Props> = ({
           }
           ref={categoryField}
         />
-        <LabeledInput label="Date" type="date" ref={dateField} defaultValue={"2020-12-20"} />
+        <LabeledInput
+          label="Date"
+          type="date"
+          ref={dateField}
+          defaultValue={"2020-12-20"}
+        />
         <LabeledInput label="Title" type="text" ref={titleField} />
         <LabeledInput label="Description" type="text" ref={descriptionField} />
         <LabeledInput label="Value" type="text" ref={priceField} />

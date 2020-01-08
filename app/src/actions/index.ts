@@ -1,6 +1,14 @@
 import { Dispatch } from "react";
 import firebase from "firebase/app";
 import { baseUrl } from "../config";
+import {
+  CreateTripBody,
+  UpdateTripBody,
+  DeleteTripBody,
+  CreateExpenseBody,
+  UpdateExpenseBody,
+  DeleteExpenseBody
+} from "../../../functions/src/generalTypes";
 
 export enum ActionTypes {
   CREATE_TRIP_REQUESTED = "CREATE_TRIP_REQUESTED",
@@ -9,6 +17,9 @@ export enum ActionTypes {
   DELETE_TRIP_REQUESTED = "DELETE_TRIP_REQUESTED",
   DELETE_TRIP_FAILED = "DELETE_TRIP_FAILED",
   DELETE_TRIP_SUCCEEDED = "DELETE_TRIP_SUCCEEDED",
+  UPDATE_TRIP_REQUESTED = "UPDATE_TRIP_REQUESTED",
+  UPDATE_TRIP_FAILED = "UPDATE_TRIP_FAILED",
+  UPDATE_TRIP_SUCCEEDED = "UPDATE_TRIP_SUCCEEDED",
   GET_TRIPS_REQUESTED = "GET_TRIPS_REQUESTED",
   GET_TRIPS_FAILED = "GET_TRIPS_FAILED",
   GET_TRIPS_SUCCEEDED = "GET_TRIPS_SUCCEEDED",
@@ -17,7 +28,10 @@ export enum ActionTypes {
   CREATE_EXPENSE_SUCCEEDED = "CREATE_EXPENSE_SUCCEEDED",
   DELETE_EXPENSE_REQUESTED = "DELETE_EXPENSE_REQUESTED",
   DELETE_EXPENSE_FAILED = "DELETE_EXPENSE_FAILED",
-  DELETE_EXPENSE_SUCCEEDED = "DELETE_EXPENSE_SUCCEEDED"
+  DELETE_EXPENSE_SUCCEEDED = "DELETE_EXPENSE_SUCCEEDED",
+  UPDATE_EXPENSE_REQUESTED = "UPDATE_EXPENSE_REQUESTED",
+  UPDATE_EXPENSE_FAILED = "UPDATE_EXPENSE_FAILED",
+  UPDATE_EXPENSE_SUCCEEDED = "UPDATE_EXPENSE_SUCCEEDED"
 }
 
 async function getToken() {
@@ -41,7 +55,7 @@ export const getTrips = () => async (dispatch: Dispatch<any>) => {
     type: ActionTypes.GET_TRIPS_REQUESTED
   });
   try {
-    const data = await fetch(`${baseUrl}/getTrips`, {
+    const data = await fetch(`${baseUrl}/trip`, {
       ...(await getApiHeaders()),
       method: "GET"
     });
@@ -56,38 +70,15 @@ export const getTrips = () => async (dispatch: Dispatch<any>) => {
     });
   }
 };
-export const deleteTrip = (tripName: string) => async (
+export const createTrip = (payload: CreateTripBody) => async (
   dispatch: Dispatch<any>
 ) => {
-  dispatch({
-    type: ActionTypes.DELETE_TRIP_REQUESTED
-  });
-  try {
-    await fetch(`${baseUrl}/deleteTrip`, {
-      ...(await getApiHeaders()),
-      method: "DELETE",
-      body: JSON.stringify({
-        tripName
-      })
-    });
-    dispatch({
-      type: ActionTypes.DELETE_TRIP_SUCCEEDED,
-      payload: tripName
-    });
-  } catch {
-    dispatch({
-      type: ActionTypes.DELETE_TRIP_FAILED,
-      payload: `Couldn't delete ${tripName} trip`
-    });
-  }
-};
-export const createTrip = (payload: any) => async (dispatch: Dispatch<any>) => {
   const { tripName, dateStart, dateEnd, town } = payload;
   dispatch({
     type: ActionTypes.CREATE_TRIP_REQUESTED
   });
   try {
-    await fetch(`${baseUrl}/createTrip`, {
+    await fetch(`${baseUrl}/trip`, {
       ...(await getApiHeaders()),
       method: "PUT",
       body: JSON.stringify({
@@ -120,7 +111,54 @@ export const createTrip = (payload: any) => async (dispatch: Dispatch<any>) => {
     });
   }
 };
-export const createExpense = (payload: any) => async (
+export const updateTrip = (payload: UpdateTripBody) => async (
+  dispatch: Dispatch<any>
+) => {
+  dispatch({
+    type: ActionTypes.UPDATE_TRIP_REQUESTED
+  });
+  try {
+    await fetch(`${baseUrl}/trip`, {
+      ...(await getApiHeaders()),
+      method: "PATCH",
+      body: JSON.stringify(payload)
+    });
+    dispatch({
+      type: ActionTypes.UPDATE_TRIP_SUCCEEDED,
+      payload
+    });
+  } catch {
+    dispatch({
+      type: ActionTypes.UPDATE_TRIP_FAILED,
+      payload: `Couldn't update ${payload.tripName} trip`
+    });
+  }
+};
+export const deleteTrip = (payload: DeleteTripBody) => async (
+  dispatch: Dispatch<any>
+) => {
+  const { tripName } = payload;
+  dispatch({
+    type: ActionTypes.DELETE_TRIP_REQUESTED
+  });
+  try {
+    await fetch(`${baseUrl}/trip`, {
+      ...(await getApiHeaders()),
+      method: "DELETE",
+      body: JSON.stringify(payload)
+    });
+    dispatch({
+      type: ActionTypes.DELETE_TRIP_SUCCEEDED,
+      payload
+    });
+  } catch {
+    dispatch({
+      type: ActionTypes.DELETE_TRIP_FAILED,
+      payload: `Couldn't delete ${tripName} trip`
+    });
+  }
+};
+export const createExpense = (payload: CreateExpenseBody) => async (
   dispatch: Dispatch<any>
 ) => {
   const { tripName, date, title, description, price, category } = payload;
@@ -128,7 +166,7 @@ export const createExpense = (payload: any) => async (
     type: ActionTypes.CREATE_EXPENSE_REQUESTED
   });
   try {
-    await fetch(`${baseUrl}/createExpense`, {
+    await fetch(`${baseUrl}/expense`, {
       ...(await getApiHeaders()),
       method: "PUT",
       body: JSON.stringify({
@@ -158,8 +196,30 @@ export const createExpense = (payload: any) => async (
     });
   }
 };
-
-export const deleteExpense = (payload: any) => async (
+export const updateExpense = (payload: UpdateExpenseBody) => async (
+  dispatch: Dispatch<any>
+) => {
+  dispatch({
+    type: ActionTypes.UPDATE_EXPENSE_REQUESTED
+  });
+  try {
+    await fetch(`${baseUrl}/expense`, {
+      ...(await getApiHeaders()),
+      method: "PATCH",
+      body: JSON.stringify(payload)
+    });
+    dispatch({
+      type: ActionTypes.UPDATE_EXPENSE_SUCCEEDED,
+      payload
+    });
+  } catch {
+    dispatch({
+      type: ActionTypes.UPDATE_EXPENSE_FAILED,
+      payload: `Couldn't update ${payload.tripName} trip`
+    });
+  }
+};
+export const deleteExpense = (payload: DeleteExpenseBody) => async (
   dispatch: Dispatch<any>
 ) => {
   const { tripName, category, expenseName } = payload;
@@ -167,7 +227,7 @@ export const deleteExpense = (payload: any) => async (
     type: ActionTypes.DELETE_EXPENSE_REQUESTED
   });
   try {
-    await fetch(`${baseUrl}/deleteExpense`, {
+    await fetch(`${baseUrl}/expense`, {
       ...(await getApiHeaders()),
       method: "DELETE",
       body: JSON.stringify({

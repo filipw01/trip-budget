@@ -1,5 +1,5 @@
 import React from "react";
-import { Trip, ExpenseCategory, Expense } from "../reducers";
+import { Trip, ExpenseCategory, Expense } from "../types";
 import BaseButton from "./BaseButton";
 import { connect } from "react-redux";
 import { deleteExpense } from "../actions";
