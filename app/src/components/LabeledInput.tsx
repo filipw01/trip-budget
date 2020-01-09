@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, Ref } from "react";
+import React, { useState, forwardRef, Ref, useEffect } from "react";
 
 interface Props {
   label: string;
@@ -10,6 +10,9 @@ interface Props {
 const LabeledInput: React.FC<Props> = forwardRef(
   ({ type = "text", label, defaultValue = "" }, ref?) => {
     const [value, setValue] = useState(defaultValue);
+    useEffect(() => {
+      setValue(defaultValue);
+    }, [defaultValue]);
     return (
       <label className="block">
         {label}

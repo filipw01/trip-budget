@@ -12,9 +12,9 @@ export interface ExpenseCategory {
 }
 
 export interface Trip {
-  tripName: string;
-  dateStart: string;
-  dateEnd: string;
+  name: string;
+  startDate: string;
+  endDate: string;
   town: string;
   expenses: Array<ExpenseCategory>;
 }
@@ -24,7 +24,7 @@ export interface Store {
   creatingExpense: boolean;
   deletingTrip: {
     isDeleting: boolean;
-    tripName: string;
+    name: string;
   };
   trips: Array<Trip>;
   errorMessage?: string;

@@ -9,7 +9,7 @@ export interface ExpenseCategory {
   values: Array<Expense>;
 }
 export interface CreateExpenseBody {
-  tripName: string;
+  name: string;
   date: string;
   title: string;
   description: string;
@@ -18,13 +18,13 @@ export interface CreateExpenseBody {
 }
 
 export interface DeleteExpenseBody {
-  tripName: string;
+  name: string;
   category: string;
   expenseName: string;
 }
 
 export interface UpdateExpenseBody {
-  tripName: string;
+  name: string;
   category: string;
   expenseName: string;
   newExpenseName?: string;
@@ -35,7 +35,7 @@ export interface UpdateExpenseBody {
 }
 
 export interface GetTripsBody {
-  tripName: string;
+  name: string;
   date: string;
   title: string;
   description: string;
@@ -44,21 +44,21 @@ export interface GetTripsBody {
 }
 
 export interface CreateTripBody {
-  tripName: string;
-  dateStart: string;
-  dateEnd: string;
+  name: string;
+  startDate: string;
+  endDate: string;
   town: string;
 }
 
 export interface DeleteTripBody {
-  tripName: string;
+  name: string;
 }
 
 export interface UpdateTripBody {
-  tripName: string;
-  newTripName?: string;
-  dateStart?: string;
-  dateEnd?: string;
+  name: string;
+  newName?: string;
+  startDate?: string;
+  endDate?: string;
   town?: string;
   expenses?: string;
 }

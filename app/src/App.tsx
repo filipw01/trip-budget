@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import BaseButton from "./components/BaseButton";
 import TripsList from "./components/TripsList";
-import firebase from "firebase/app";
-import "firebase/auth";
-import firebaseConfig from "./firebaseConfig";
 import { getTrips } from "./actions";
 import { connect } from "react-redux";
 import NewTrip from "./components/NewTrip";
 import NewExpense from "./components/NewExpense";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 interface Props {
   getTrips: Function;
@@ -15,8 +14,8 @@ interface Props {
 
 const App: React.FC<Props> = ({ getTrips }) => {
   useEffect(() => {
-    firebase.initializeApp(firebaseConfig);
-  }, []);
+    getTrips();
+  }, [getTrips]);
 
   const signIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();

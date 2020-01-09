@@ -38,13 +38,13 @@ const trips: Reducer<any, tripsReducerArguments> = (
     case ActionTypes.DELETE_TRIP_REQUESTED:
       return {
         ...state,
-        deletingTrip: { isDeleting: true, tripName: payload }
+        deletingTrip: { isDeleting: true, name: payload }
       };
     case ActionTypes.DELETE_TRIP_SUCCEEDED:
       return {
         ...state,
         trips: state.trips.filter((trip: Trip) => {
-          return trip.tripName !== payload.tripName;
+          return trip.name !== payload.name;
         }),
         deletingTrip: {
           isDeleting: false
@@ -64,7 +64,7 @@ const trips: Reducer<any, tripsReducerArguments> = (
       return {
         ...state,
         trips: state.trips.map((trip: Trip) =>
-          trip.tripName === payload.tripName
+          trip.name === payload.name
             ? {
                 ...trip,
                 expenses: [
@@ -90,7 +90,7 @@ const trips: Reducer<any, tripsReducerArguments> = (
       return {
         ...state,
         trips: state.trips.map((trip: Trip) =>
-          trip.tripName === payload.tripName
+          trip.name === payload.name
             ? {
                 ...trip,
                 expenses: [

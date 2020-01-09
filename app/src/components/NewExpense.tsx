@@ -18,7 +18,7 @@ const NewExpense: React.FC<Props> = ({
   createExpense,
   trips
 }) => {
-  const [currentTrip, setCurrentTrip] = useState<string>(trips[0]?.tripName);
+  const [currentTrip, setCurrentTrip] = useState<string>(trips[0]?.name);
 
   const nameField = useRef<HTMLSelectElement>(null);
   const categoryField = useRef<HTMLSelectElement>(null);
@@ -35,7 +35,7 @@ const NewExpense: React.FC<Props> = ({
       <div className="flex flex-col items-center mb-4">
         <LabeledSelect
           label="Trip name"
-          options={trips.map(trip => trip.tripName)}
+          options={trips.map(trip => trip.name)}
           ref={nameField}
           handleChange={handleChange}
         />
@@ -43,7 +43,7 @@ const NewExpense: React.FC<Props> = ({
           label="Category"
           options={
             trips
-              .find(trip => trip.tripName === currentTrip)
+              .find(trip => trip.name === currentTrip)
               ?.expenses.map(expense => expense.name) || []
           }
           ref={categoryField}
@@ -63,7 +63,7 @@ const NewExpense: React.FC<Props> = ({
           disabled={creatingExpense}
           clickHandler={() =>
             createExpense({
-              tripName: nameField?.current?.value,
+              name: nameField?.current?.value,
               date: dateField?.current?.value,
               title: titleField?.current?.value,
               description: descriptionField?.current?.value,

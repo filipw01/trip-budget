@@ -7,7 +7,8 @@ import {
 import { Response } from "express";
 const express = require("express");
 const tripRouter = express.Router();
-const { db, addIfDefined } = require("./index");
+import { addIfDefined } from "./index";
+import { db } from "./firebase";
 
 tripRouter.get("/", (req: GetTripsRequest, res: Response) => {
   db.collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
@@ -25,15 +26,15 @@ tripRouter.get("/", (req: GetTripsRequest, res: Response) => {
 });
 
 tripRouter.put("/", async (req: CreateTripRequest, res: Response) => {
-  const { tripName, dateStart, dateEnd, town } = req.body;
+  const { name, startDate, endDate, town } = req.body;
   const docRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
-    .doc(tripName);
+    .doc(name);
 
   const newTrip = await docRef.set({
-    tripName,
-    dateStart,
-    dateEnd,
+    name,
+    startDate,
+    endDate,
     town,
     expenses: [
       { name: "accommodation", values: [] },
@@ -45,33 +46,25 @@ tripRouter.put("/", async (req: CreateTripRequest, res: Response) => {
 });
 
 tripRouter.delete("/", async (req: DeleteTripRequest, res: Response) => {
-  const { tripName } = req.body;
+  const { name } = req.body;
   const deletedTrip = await db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
-    .doc(tripName)
+    .doc(name)
     .delete();
 
   res.send(deletedTrip);
 });
 
 tripRouter.patch("/", async (req: UpdateTripRequest, res: Response) => {
-  const {
-    tripName,
-    dateStart,
-    dateEnd,
-    town,
-    expenses,
-    newTripName
-  } = req.body;
+  const { name, startDate, endDate, town, newName } = req.body;
   const docRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
-    .doc(tripName);
+    .doc(name);
   const updateData = {};
-  addIfDefined(updateData, newTripName, "tripName");
-  addIfDefined(updateData, dateStart, "dateStart");
-  addIfDefined(updateData, dateEnd, "dateEnd");
+  addIfDefined(updateData, newName, "name");
+  addIfDefined(updateData, startDate, "startDate");
+  addIfDefined(updateData, endDate, "endDate");
   addIfDefined(updateData, town, "town");
-  addIfDefined(updateData, expenses, "expenses");
   const trip = await docRef.update(updateData);
   res.send(trip);
 });

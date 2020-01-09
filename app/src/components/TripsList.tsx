@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { getTrips, deleteTrip } from "../actions";
 import BaseButton from "./BaseButton";
@@ -8,24 +8,22 @@ import { Trip, Store } from "../types";
 interface Props {
   trips: Array<Object | never>;
   tripsLoading: boolean;
-  deletingTrip: { isDeleting: boolean; tripName: string };
-  getTrips: Function;
+  deletingTrip: { isDeleting: boolean; name: string };
   deleteTrip: Function;
+  getTrips: Function;
 }
 
 const TripsList: React.FC<Props> = ({
   trips,
   tripsLoading,
-  getTrips,
   deleteTrip,
-  deletingTrip
+  deletingTrip,
+  getTrips
 }) => {
-  useEffect(() => {
-    getTrips();
-  }, [getTrips]);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
   return (
     <LoadingOverlay active={deletingTrip.isDeleting}>
+      <BaseButton clickHandler={() => getTrips()}>Refresh</BaseButton>
       <ul className="max-w-sm">
         {tripsLoading
           ? "Loading"
@@ -35,12 +33,12 @@ const TripsList: React.FC<Props> = ({
               <li
                 onClick={() => setSelectedTrip(trip)}
                 className="flex justify-between px-6 py-4 border border-gray-700"
-                key={trip.tripName}
+                key={trip.name}
               >
-                {trip.tripName}
+                {trip.name}
                 <BaseButton
                   clickHandler={e =>
-                    deleteTrip(trip.tripName) && e.stopPropagation()
+                    deleteTrip({name:trip.name}) && e.stopPropagation()
                   }
                 >
                   Delete

@@ -40,9 +40,9 @@ const NewTrip: React.FC<Props> = ({ createTrip, creatingTrip }) => {
           disabled={creatingTrip}
           clickHandler={() =>
             createTrip({
-              tripName: nameField?.current?.value,
-              dateStart: startDateField?.current?.value,
-              dateEnd: endDateField?.current?.value,
+              name: nameField?.current?.value,
+              startDate: startDateField?.current?.value,
+              endDate: endDateField?.current?.value,
               town: townField?.current?.value
             })
           }

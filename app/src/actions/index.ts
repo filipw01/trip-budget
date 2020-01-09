@@ -1,5 +1,6 @@
 import { Dispatch } from "react";
 import firebase from "firebase/app";
+import "firebase/auth";
 import { baseUrl } from "../config";
 import {
   CreateTripBody,
@@ -36,7 +37,7 @@ export enum ActionTypes {
 
 async function getToken() {
   try {
-    return firebase?.auth()?.currentUser?.getIdToken();
+    return firebase.auth().currentUser?.getIdToken();
   } catch (error) {
     console.error(error);
   }
@@ -73,7 +74,7 @@ export const getTrips = () => async (dispatch: Dispatch<any>) => {
 export const createTrip = (payload: CreateTripBody) => async (
   dispatch: Dispatch<any>
 ) => {
-  const { tripName, dateStart, dateEnd, town } = payload;
+  const { name, startDate, endDate, town } = payload;
   dispatch({
     type: ActionTypes.CREATE_TRIP_REQUESTED
   });
@@ -82,9 +83,9 @@ export const createTrip = (payload: CreateTripBody) => async (
       ...(await getApiHeaders()),
       method: "PUT",
       body: JSON.stringify({
-        tripName,
-        dateStart,
-        dateEnd,
+        name,
+        startDate,
+        endDate,
         town,
         expenses: [
           { name: "accommodations", values: [] },
@@ -107,7 +108,7 @@ export const createTrip = (payload: CreateTripBody) => async (
   } catch {
     dispatch({
       type: ActionTypes.CREATE_TRIP_FAILED,
-      payload: `Couldn't create ${tripName} trip`
+      payload: `Couldn't create ${name} trip`
     });
   }
 };
@@ -130,14 +131,14 @@ export const updateTrip = (payload: UpdateTripBody) => async (
   } catch {
     dispatch({
       type: ActionTypes.UPDATE_TRIP_FAILED,
-      payload: `Couldn't update ${payload.tripName} trip`
+      payload: `Couldn't update ${payload.name} trip`
     });
   }
 };
 export const deleteTrip = (payload: DeleteTripBody) => async (
   dispatch: Dispatch<any>
 ) => {
-  const { tripName } = payload;
+  const { name } = payload;
   dispatch({
     type: ActionTypes.DELETE_TRIP_REQUESTED
   });
@@ -154,14 +155,14 @@ export const deleteTrip = (payload: DeleteTripBody) => async (
   } catch {
     dispatch({
       type: ActionTypes.DELETE_TRIP_FAILED,
-      payload: `Couldn't delete ${tripName} trip`
+      payload: `Couldn't delete ${name} trip`
     });
   }
 };
 export const createExpense = (payload: CreateExpenseBody) => async (
   dispatch: Dispatch<any>
 ) => {
-  const { tripName, date, title, description, price, category } = payload;
+  const { name, date, title, description, price, category } = payload;
   dispatch({
     type: ActionTypes.CREATE_EXPENSE_REQUESTED
   });
@@ -170,7 +171,7 @@ export const createExpense = (payload: CreateExpenseBody) => async (
       ...(await getApiHeaders()),
       method: "PUT",
       body: JSON.stringify({
-        tripName,
+        name,
         date,
         title,
         description,
@@ -181,7 +182,7 @@ export const createExpense = (payload: CreateExpenseBody) => async (
     dispatch({
       type: ActionTypes.CREATE_EXPENSE_SUCCEEDED,
       payload: {
-        tripName,
+        name,
         date,
         title,
         description,
@@ -215,14 +216,14 @@ export const updateExpense = (payload: UpdateExpenseBody) => async (
   } catch {
     dispatch({
       type: ActionTypes.UPDATE_EXPENSE_FAILED,
-      payload: `Couldn't update ${payload.tripName} trip`
+      payload: `Couldn't update ${payload.name} trip`
     });
   }
 };
 export const deleteExpense = (payload: DeleteExpenseBody) => async (
   dispatch: Dispatch<any>
 ) => {
-  const { tripName, category, expenseName } = payload;
+  const { name, category, expenseName } = payload;
   dispatch({
     type: ActionTypes.DELETE_EXPENSE_REQUESTED
   });
@@ -231,19 +232,19 @@ export const deleteExpense = (payload: DeleteExpenseBody) => async (
       ...(await getApiHeaders()),
       method: "DELETE",
       body: JSON.stringify({
-        tripName,
+        name,
         category,
         expenseName
       })
     });
     dispatch({
       type: ActionTypes.DELETE_EXPENSE_SUCCEEDED,
-      payload: { tripName, category, expenseName }
+      payload: { name, category, expenseName }
     });
   } catch {
     dispatch({
       type: ActionTypes.DELETE_EXPENSE_FAILED,
-      payload: `Couldn't delete ${expenseName} expense in ${tripName} trip`
+      payload: `Couldn't delete ${expenseName} expense in ${name} trip`
     });
   }
 };
