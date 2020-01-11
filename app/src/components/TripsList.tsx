@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { getTrips, deleteTrip, getCategories } from "../actions";
+import { getCategories } from "../actions/category";
+import { getTrips, deleteTrip } from "../actions/trip";
 import BaseButton from "./BaseButton";
 import TripDetails from "./TripDetails";
 import LoadingOverlay from "./LoadingOverlay";
@@ -8,8 +9,7 @@ import { Store } from "../types";
 import { DeleteTripBody, Trip } from "../../../functions/src/generalTypes";
 interface Props {
   trips: Array<Trip>;
-  tripsLoading: boolean;
-  deletingTrip: { isDeleting: boolean; name: string };
+  loading: boolean;
   deleteTrip: (payload: DeleteTripBody) => any;
   getTrips: Function;
   getCategories: Function;
@@ -17,20 +17,19 @@ interface Props {
 
 const TripsList: React.FC<Props> = ({
   trips,
-  tripsLoading,
+  loading,
   deleteTrip,
-  deletingTrip,
   getTrips,
   getCategories
 }) => {
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
   return (
-    <LoadingOverlay active={deletingTrip.isDeleting}>
+    <LoadingOverlay active={loading}>
       <BaseButton clickHandler={() => getTrips() && getCategories()}>
         Refresh
       </BaseButton>
       <ul className="max-w-sm">
-        {tripsLoading
+        {loading
           ? "Loading"
           : trips.length === 0
           ? "No data"
@@ -58,8 +57,7 @@ const TripsList: React.FC<Props> = ({
 
 const mapStateToProps = (state: Store) => ({
   trips: state.trips,
-  tripsLoading: state.tripsLoading,
-  deletingTrip: state.deletingTrip
+  loading: state.loading
 });
 
 const mapDispatchToProps = {

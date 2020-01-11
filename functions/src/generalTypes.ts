@@ -19,6 +19,11 @@ export interface Category {
   name: string;
   color: string;
 }
+export interface Message {
+  content: string;
+  type: MessageTypes;
+}
+type MessageTypes = "warning" | "error" | "info" | "success";
 export interface GetExpensesBody {
   tripId: string;
 }

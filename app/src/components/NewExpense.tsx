@@ -3,7 +3,7 @@ import BaseButton from "./BaseButton";
 import LoadingOverlay from "./LoadingOverlay";
 import LabeledInput from "./LabeledInput";
 import { connect } from "react-redux";
-import { createExpense } from "../actions";
+import { createExpense } from "../actions/expense";
 import { Store } from "../types";
 import LabeledSelect from "./LabeledSelect";
 import {
@@ -13,14 +13,14 @@ import {
 } from "../../../functions/src/generalTypes";
 
 interface Props {
-  creatingExpense: boolean;
+  loading: boolean;
   trips: Array<Trip>;
   categories: Category[];
   createExpense: (payload: CreateExpenseBody) => any;
 }
 
 const NewExpense: React.FC<Props> = ({
-  creatingExpense,
+  loading,
   createExpense,
   trips,
   categories
@@ -47,7 +47,7 @@ const NewExpense: React.FC<Props> = ({
   const priceField = useRef<HTMLInputElement>(null);
 
   return (
-    <LoadingOverlay active={creatingExpense}>
+    <LoadingOverlay active={loading}>
       <div className="flex flex-col items-center mb-4">
         <LabeledSelect
           label="Trip name"
@@ -82,7 +82,7 @@ const NewExpense: React.FC<Props> = ({
 
         <BaseButton
           cssClasses="mt-4"
-          disabled={creatingExpense}
+          disabled={loading}
           clickHandler={() =>
             createExpense({
               tripId: selectedTrip || defaults.tripId,
@@ -103,7 +103,7 @@ const NewExpense: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: Store) => ({
-  creatingExpense: state.creatingExpense,
+  loading: state.loading,
   trips: state.trips,
   categories: state.categories
 });

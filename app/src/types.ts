@@ -2,24 +2,18 @@ import { ActionTypes } from "./actions";
 import {
   Expense,
   Category,
-  Trip
+  Trip,
+  Message
 } from "../../functions/src/generalTypes";
 export interface Store {
-  tripsLoading: boolean;
-  creatingTrip: boolean;
-  creatingExpense: boolean;
-  updatingTrip: boolean;
-  deletingTrip: {
-    isDeleting: boolean;
-    name: string;
-  };
+  loading: boolean;
   expenses: Array<Expense>;
   categories: Array<Category>;
   trips: Array<Trip>;
-  errorMessage?: string;
+  messages: Array<Message>;
 }
 
-export interface tripsReducerArguments {
+export interface ReducerArguments {
   type: ActionTypes;
   payload: any;
 }

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import BaseButton from "./components/BaseButton";
 import TripsList from "./components/TripsList";
-import { getTrips, getCategories } from "./actions";
+import { getCategories } from "./actions/category";
+import { getTrips } from "./actions/trip";
 import { connect } from "react-redux";
 import NewTrip from "./components/NewTrip";
 import NewExpense from "./components/NewExpense";

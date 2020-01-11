@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { updateExpense } from "../actions";
+import { updateExpense } from "../actions/expense";
 import { connect } from "react-redux";
 import LabeledInput from "./LabeledInput";
 import BaseButton from "./BaseButton";

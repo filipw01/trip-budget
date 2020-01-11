@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
-import { deleteCategory, updateCategory } from "../actions";
+import { deleteCategory, updateCategory } from "../actions/category";
 import BaseButton from "./BaseButton";
 import { Store } from "../types";
 import LabeledInput from "./LabeledInput";

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
-import { createTrip } from "../actions";
+import { createTrip } from "../actions/trip";
 import BaseButton from "./BaseButton";
 import LoadingOverlay from "./LoadingOverlay";
 import LabeledInput from "./LabeledInput";
@@ -9,10 +9,10 @@ import { CreateTripBody } from "../../../functions/src/generalTypes";
 
 interface Props {
   createTrip: (payload: CreateTripBody) => void;
-  creatingTrip: boolean;
+  loading: boolean;
 }
 
-const NewTrip: React.FC<Props> = ({ createTrip, creatingTrip }) => {
+const NewTrip: React.FC<Props> = ({ createTrip, loading }) => {
   const nameField = useRef<HTMLInputElement>(null);
   const startDateField = useRef<HTMLInputElement>(null);
   const endDateField = useRef<HTMLInputElement>(null);
@@ -26,7 +26,7 @@ const NewTrip: React.FC<Props> = ({ createTrip, creatingTrip }) => {
   };
 
   return (
-    <LoadingOverlay active={creatingTrip}>
+    <LoadingOverlay active={loading}>
       <div className="flex flex-col items-center mb-4">
         <LabeledInput label="Trip name" type="text" ref={nameField} />
         <LabeledInput
@@ -45,7 +45,7 @@ const NewTrip: React.FC<Props> = ({ createTrip, creatingTrip }) => {
 
         <BaseButton
           cssClasses="mt-4"
-          disabled={creatingTrip}
+          disabled={loading}
           clickHandler={() =>
             createTrip({
               name: nameField?.current?.value || defaults.name,
@@ -62,7 +62,7 @@ const NewTrip: React.FC<Props> = ({ createTrip, creatingTrip }) => {
   );
 };
 const mapStateToProps = (state: Store) => ({
-  creatingTrip: state.creatingTrip
+  loading: state.loading
 });
 
 const mapDispatchToProps = {
