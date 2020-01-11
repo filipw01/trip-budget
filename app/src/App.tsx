@@ -1,21 +1,25 @@
 import React, { useEffect } from "react";
 import BaseButton from "./components/BaseButton";
 import TripsList from "./components/TripsList";
-import { getTrips } from "./actions";
+import { getTrips, getCategories } from "./actions";
 import { connect } from "react-redux";
 import NewTrip from "./components/NewTrip";
 import NewExpense from "./components/NewExpense";
+import NewCategory from "./components/NewCategory";
 import firebase from "firebase/app";
 import "firebase/auth";
+import CategoriesList from "./components/CategoriesList";
 
 interface Props {
   getTrips: Function;
+  getCategories: Function;
 }
 
-const App: React.FC<Props> = ({ getTrips }) => {
+const App: React.FC<Props> = ({ getTrips, getCategories }) => {
   useEffect(() => {
     getTrips();
-  }, [getTrips]);
+    getCategories();
+  }, [getTrips, getCategories]);
 
   const signIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -35,6 +39,8 @@ const App: React.FC<Props> = ({ getTrips }) => {
           Sign in
         </BaseButton>
         <NewTrip />
+        <NewCategory />
+        <CategoriesList />
         <NewExpense />
         <TripsList />
       </header>
@@ -43,7 +49,8 @@ const App: React.FC<Props> = ({ getTrips }) => {
 };
 
 const mapDispatchToProps = {
-  getTrips
+  getTrips,
+  getCategories
 };
 
 export default connect(null, mapDispatchToProps)(App);

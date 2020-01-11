@@ -2,7 +2,7 @@ import React, { forwardRef, Ref, ChangeEvent } from "react";
 
 interface Props {
   label: string;
-  options: Array<string>;
+  options: Array<{ key: string; name: string }>;
   ref?: Ref<HTMLSelectElement>;
   handleChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -18,7 +18,9 @@ const LabeledSelect: React.FC<Props> = forwardRef(
           ref={ref}
         >
           {options.map(option => (
-            <option key={option}>{option}</option>
+            <option key={option.key} data-id={option.key}>
+              {option.name}
+            </option>
           ))}
         </select>
       </label>

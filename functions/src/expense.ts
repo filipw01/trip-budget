@@ -1,113 +1,77 @@
 import {
   CreateExpenseRequest,
   DeleteExpenseRequest,
-  UpdateExpenseRequest
+  UpdateExpenseRequest,
+  GetExpensesRequest
 } from "./requestTypes";
 import { Response } from "express";
-import { ExpenseCategory } from "./generalTypes";
 const express = require("express");
 const expenseRouter = express.Router();
 import { db } from "./firebase";
 
+expenseRouter.get(
+  "/:tripId",
+  async (req: GetExpensesRequest, res: Response) => {
+    db.collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
+      .doc(req.params?.tripId)
+      .collection("expenses")
+      .get()
+      .then((snapshot: any) => {
+        const documents: Array<Object> = [];
+        snapshot.forEach((doc: any) => {
+          documents.push({ id: doc.id, ...doc.data() });
+        });
+        res.send(documents);
+      })
+      .catch((err: any) => {
+        res.send(`Error getting expenses ${err}`);
+      });
+  }
+);
+
 expenseRouter.put("/", async (req: CreateExpenseRequest, res: Response) => {
-  const { name, date, title, description, price, category } = req.body;
-  const docRef = db
-    .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
-    .doc(name);
-  let oldTripData;
-  docRef
-    .get()
-    .then(doc => {
-      oldTripData = doc.data();
-      docRef
-        .update({
-          expenses: oldTripData?.expenses.map(
-            (expenseCategory: ExpenseCategory) =>
-              expenseCategory.name === category
-                ? {
-                    ...expenseCategory,
-                    values: [
-                      ...expenseCategory.values,
-                      { title, date, description, price }
-                    ]
-                  }
-                : expenseCategory
-          )
-        })
-        .then((result: any) => res.send(result))
-        .catch(error => console.error(error));
-    })
+  const { tripId, categoryId, name, date, description, price } = req.body;
+  db.collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
+    .doc(tripId)
+    .collection("expenses")
+    .add({ categoryId, name, date, description, price })
+    .then((result: any) => res.send(result))
     .catch(error => console.error(error));
 });
 
 expenseRouter.delete("/", async (req: DeleteExpenseRequest, res: Response) => {
-  const { name, expenseName, category } = req.body;
-  const docRef = db
-    .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
-    .doc(name);
-  let oldTripData;
-  docRef
-    .get()
-    .then(doc => {
-      oldTripData = doc.data();
-      docRef
-        .update({
-          expenses: oldTripData?.expenses.map(
-            (expenseCategory: ExpenseCategory) =>
-              expenseCategory.name === category
-                ? {
-                    ...expenseCategory,
-                    values: expenseCategory.values.filter(
-                      expense => expense.title !== expenseName
-                    )
-                  }
-                : expenseCategory
-          )
-        })
-        .then((result: any) => res.send(result))
-        .catch(error => console.error(error));
-    })
+  const { tripId, expenseId } = req.body;
+  db.collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
+    .doc(tripId)
+    .collection("expenses")
+    .doc(expenseId)
+    .delete()
+    .then((result: any) => res.send(result))
     .catch(error => console.error(error));
 });
 
 expenseRouter.patch("/", async (req: UpdateExpenseRequest, res: Response) => {
   const {
+    tripId,
+    expenseId,
     name,
-    category,
-    expenseName,
     date,
     description,
     price,
-    newTitle
+    categoryId
   } = req.body;
-  const docRef = db
-    .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
-    .doc(name);
-  let oldTripData;
-  console.log(oldTripData)
-  docRef
-    .get()
-    .then(doc => {
-      oldTripData = doc.data();
-      docRef
-        .update({
-          expenses: oldTripData?.expenses.map(
-            (expenseCategory: ExpenseCategory) =>
-              expenseCategory.name === category
-                ? {
-                    ...expenseCategory,
-                    values: expenseCategory.values.map(expense =>
-                      expense.title === expenseName
-                        ? { title: newTitle, price, description, date }
-                        : expense
-                    )
-                  }
-                : expenseCategory
-          )
-        })
-        .then((result: any) => res.send(result))
-        .catch(error => console.error(error));
+  db.collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
+    .doc(tripId)
+    .collection("expenses")
+    .doc(expenseId)
+    .update({
+      name,
+      date,
+      description,
+      price,
+      categoryId
     })
+    .then((result: any) => res.send(result))
     .catch(error => console.error(error));
 });
 

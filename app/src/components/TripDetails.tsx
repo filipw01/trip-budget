@@ -1,17 +1,33 @@
-import React from "react";
-import { Trip, ExpenseCategory, Expense } from "../types";
+import React, { useEffect } from "react";
+import { Store } from "../types";
 import BaseButton from "./BaseButton";
 import UpdateTrip from "./UpdateTrip";
 import { connect } from "react-redux";
-import { deleteExpense } from "../actions";
+import { deleteExpense, getExpenses } from "../actions";
 import UpdateExpense from "./UpdateExpense";
+import {
+  DeleteExpenseBody,
+  GetExpensesBody,
+  Trip,
+  Expense
+} from "../../../functions/src/generalTypes";
 
 interface Props {
   trip: Trip;
-  deleteExpense: Function;
+  expenses: Array<Expense>;
+  deleteExpense: (payload: DeleteExpenseBody) => any;
+  getExpenses: (payload: GetExpensesBody) => any;
 }
 
-const TripDetails: React.FC<Props> = ({ trip, deleteExpense }) => {
+const TripDetails: React.FC<Props> = ({
+  trip,
+  deleteExpense,
+  getExpenses,
+  expenses
+}) => {
+  useEffect(() => {
+    getExpenses({ tripId: trip.id });
+  }, [getExpenses, trip.id]);
   return (
     <div>
       <UpdateTrip trip={trip} />
@@ -19,43 +35,36 @@ const TripDetails: React.FC<Props> = ({ trip, deleteExpense }) => {
       <div>{trip.startDate}</div>
       <div>{trip.endDate}</div>
       <div>{trip.town}</div>
-      {trip.expenses.map((expenseCategory: ExpenseCategory) => (
-        <div className="m-4" key={expenseCategory.name}>
-          {expenseCategory.name}
-          <div className="m-4">
-            {expenseCategory.values.map((expense: Expense) => (
-              <div className="m-4" key={expense.title}>
-                <UpdateExpense
-                  expense={expense}
-                  category={expenseCategory.name}
-                  trip={trip}
-                />
-                <p>{expense.title}</p>
-                <p>{expense.date}</p>
-                <p>{expense.description}</p>
-                <p>{expense.price}</p>
-                <BaseButton
-                  clickHandler={() =>
-                    deleteExpense({
-                      name: trip.name,
-                      category: expenseCategory.name,
-                      expenseName: expense.title
-                    })
-                  }
-                >
-                  Delete
-                </BaseButton>
-              </div>
-            ))}
-          </div>
+      {expenses.map(expense => (
+        <div className="m-4" key={expense.name}>
+          <UpdateExpense expense={expense} trip={trip} />
+          <p>{expense.name}</p>
+          <p>{expense.date}</p>
+          <p>{expense.description}</p>
+          <p>{expense.price}</p>
+          <BaseButton
+            clickHandler={() =>
+              deleteExpense({
+                tripId: trip.id,
+                expenseId: expense.id
+              })
+            }
+          >
+            Delete
+          </BaseButton>
         </div>
       ))}
     </div>
   );
 };
 
+const mapStateToProps = (state: Store) => ({
+  expenses: state.expenses
+});
+
 const mapDispatchToProps = {
-  deleteExpense
+  deleteExpense,
+  getExpenses
 };
 
-export default connect(null, mapDispatchToProps)(TripDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(TripDetails);

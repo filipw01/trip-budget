@@ -5,9 +5,10 @@ import BaseButton from "./BaseButton";
 import LoadingOverlay from "./LoadingOverlay";
 import LabeledInput from "./LabeledInput";
 import { Store } from "../types";
+import { CreateTripBody } from "../../../functions/src/generalTypes";
 
 interface Props {
-  createTrip: Function;
+  createTrip: (payload: CreateTripBody) => void;
   creatingTrip: boolean;
 }
 
@@ -16,6 +17,13 @@ const NewTrip: React.FC<Props> = ({ createTrip, creatingTrip }) => {
   const startDateField = useRef<HTMLInputElement>(null);
   const endDateField = useRef<HTMLInputElement>(null);
   const townField = useRef<HTMLInputElement>(null);
+
+  const defaults = {
+    name: "",
+    startDate: "2020-12-12",
+    endDate: "2020-12-13",
+    town: ""
+  };
 
   return (
     <LoadingOverlay active={creatingTrip}>
@@ -40,10 +48,10 @@ const NewTrip: React.FC<Props> = ({ createTrip, creatingTrip }) => {
           disabled={creatingTrip}
           clickHandler={() =>
             createTrip({
-              name: nameField?.current?.value,
-              startDate: startDateField?.current?.value,
-              endDate: endDateField?.current?.value,
-              town: townField?.current?.value
+              name: nameField?.current?.value || defaults.name,
+              startDate: startDateField?.current?.value || defaults.startDate,
+              endDate: endDateField?.current?.value || defaults.endDate,
+              town: townField?.current?.value || defaults.town
             })
           }
         >

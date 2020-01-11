@@ -1,46 +1,64 @@
 export interface Expense {
-  title: string;
+  id: string;
+  categoryId: string;
+  name: string;
   price: string;
   description: string;
   date: string;
 }
-export interface ExpenseCategory {
+export interface Trip {
+  id: string;
   name: string;
-  values: Array<Expense>;
+  startDate: string;
+  endDate: string;
+  town: string;
+}
+export interface Category {
+  id: string;
+  tripId: string;
+  name: string;
+  color: string;
+}
+export interface GetExpensesBody {
+  tripId: string;
 }
 export interface CreateExpenseBody {
-  name: string;
+  tripId: string;
+  categoryId: string;
   date: string;
-  title: string;
+  name: string;
   description: string;
   price: string;
-  category: string;
 }
 
 export interface DeleteExpenseBody {
-  name: string;
-  category: string;
-  expenseName: string;
+  tripId: string;
+  expenseId: string;
 }
 
 export interface UpdateExpenseBody {
-  name: string;
-  category: string;
-  expenseName: string;
-  newExpenseName?: string;
+  tripId: string;
+  expenseId: string;
+  categoryId?: string;
   date?: string;
-  newTitle?: string;
+  name?: string;
   description?: string;
   price?: string;
 }
 
-export interface GetTripsBody {
+export interface CreateCategoryBody {
   name: string;
-  date: string;
-  title: string;
-  description: string;
-  price: string;
-  category: string;
+  color: string;
+}
+
+export interface DeleteCategoryBody {
+  id: string;
+}
+
+export interface UpdateCategoryBody {
+  id: string;
+  name: string;
+  color: string;
 }
 
 export interface CreateTripBody {
@@ -51,14 +69,13 @@ export interface CreateTripBody {
 }
 
 export interface DeleteTripBody {
-  name: string;
+  id: string;
 }
 
 export interface UpdateTripBody {
-  name: string;
-  newName?: string;
+  id: string;
+  name?: string;
   startDate?: string;
   endDate?: string;
   town?: string;
-  expenses?: string;
 }

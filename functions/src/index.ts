@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import { validateFirebaseIdToken } from "./middlewares/validateFirebaseIdToken";
 import tripRouter from "./trip";
 import expenseRouter from "./expense";
+import categoryRouter from "./category";
 const cors = require("cors")({ origin: true });
 const express = require("express");
 const cookieParser = require("cookie-parser")();
@@ -19,5 +20,6 @@ app.use(validateFirebaseIdToken);
 // Add routes
 app.use("/trip", tripRouter);
 app.use("/expense", expenseRouter);
+app.use("/category", categoryRouter);
 
 exports.app = functions.https.onRequest(app);

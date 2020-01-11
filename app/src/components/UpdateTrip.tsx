@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
 import { updateTrip } from "../actions";
-import { Trip } from "../types";
 import { connect } from "react-redux";
 import LabeledInput from "./LabeledInput";
 import BaseButton from "./BaseButton";
+import { UpdateTripBody, Trip } from "../../../functions/src/generalTypes";
 
 interface Props {
   trip: Trip;
-  updateTrip: Function;
+  updateTrip: (payload: UpdateTripBody) => any;
 }
 
 const UpdateTrip: React.FC<Props> = ({ updateTrip, trip }) => {
@@ -47,8 +47,8 @@ const UpdateTrip: React.FC<Props> = ({ updateTrip, trip }) => {
         cssClasses="mt-4"
         clickHandler={() =>
           updateTrip({
-            name: trip.name,
-            newName: nameField?.current?.value,
+            id: trip.id,
+            name: nameField?.current?.value,
             startDate: startDateField?.current?.value,
             endDate: endDateField?.current?.value,
             town: townField?.current?.value
@@ -60,7 +60,6 @@ const UpdateTrip: React.FC<Props> = ({ updateTrip, trip }) => {
     </div>
   );
 };
-
 
 const mapDispatchToProps = {
   updateTrip

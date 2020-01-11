@@ -3,14 +3,21 @@ import {
   CreateExpenseBody,
   DeleteExpenseBody,
   UpdateExpenseBody,
-  GetTripsBody,
+  CreateCategoryBody,
+  DeleteCategoryBody,
+  UpdateCategoryBody,
   CreateTripBody,
   UpdateTripBody,
-  DeleteTripBody
+  DeleteTripBody,
+  GetExpensesBody
 } from "./generalTypes";
 
 export interface RequestWithCredentials extends Request {
   user: { name: string };
+}
+
+export interface GetExpensesRequest extends RequestWithCredentials {
+  body: GetExpensesBody;
 }
 
 export interface CreateExpenseRequest extends RequestWithCredentials {
@@ -25,8 +32,16 @@ export interface UpdateExpenseRequest extends RequestWithCredentials {
   body: UpdateExpenseBody;
 }
 
-export interface GetTripsRequest extends RequestWithCredentials {
-  body: GetTripsBody;
+export interface CreateCategoryRequest extends RequestWithCredentials {
+  body: CreateCategoryBody;
+}
+
+export interface DeleteCategoryRequest extends RequestWithCredentials {
+  body: DeleteCategoryBody;
+}
+
+export interface UpdateCategoryRequest extends RequestWithCredentials {
+  body: UpdateCategoryBody;
 }
 
 export interface CreateTripRequest extends RequestWithCredentials {

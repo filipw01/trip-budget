@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { getTrips, deleteTrip } from "../actions";
+import { getTrips, deleteTrip, getCategories } from "../actions";
 import BaseButton from "./BaseButton";
 import TripDetails from "./TripDetails";
 import LoadingOverlay from "./LoadingOverlay";
-import { Trip, Store } from "../types";
+import { Store } from "../types";
+import { DeleteTripBody, Trip } from "../../../functions/src/generalTypes";
 interface Props {
-  trips: Array<Object | never>;
+  trips: Array<Trip>;
   tripsLoading: boolean;
   deletingTrip: { isDeleting: boolean; name: string };
-  deleteTrip: Function;
+  deleteTrip: (payload: DeleteTripBody) => any;
   getTrips: Function;
+  getCategories: Function;
 }
 
 const TripsList: React.FC<Props> = ({
@@ -18,27 +20,30 @@ const TripsList: React.FC<Props> = ({
   tripsLoading,
   deleteTrip,
   deletingTrip,
-  getTrips
+  getTrips,
+  getCategories
 }) => {
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
   return (
     <LoadingOverlay active={deletingTrip.isDeleting}>
-      <BaseButton clickHandler={() => getTrips()}>Refresh</BaseButton>
+      <BaseButton clickHandler={() => getTrips() && getCategories()}>
+        Refresh
+      </BaseButton>
       <ul className="max-w-sm">
         {tripsLoading
           ? "Loading"
           : trips.length === 0
           ? "No data"
-          : trips.map((trip: any) => (
+          : trips.map(trip => (
               <li
                 onClick={() => setSelectedTrip(trip)}
                 className="flex justify-between px-6 py-4 border border-gray-700"
-                key={trip.name}
+                key={trip.id}
               >
                 {trip.name}
                 <BaseButton
                   clickHandler={e =>
-                    deleteTrip({name:trip.name}) && e.stopPropagation()
+                    deleteTrip({ id: trip.id }) && e.stopPropagation()
                   }
                 >
                   Delete
@@ -59,6 +64,7 @@ const mapStateToProps = (state: Store) => ({
 
 const mapDispatchToProps = {
   getTrips,
+  getCategories,
   deleteTrip
 };
 
