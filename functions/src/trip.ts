@@ -55,10 +55,6 @@ tripRouter.patch("/", async (req: UpdateTripRequest, res: Response) => {
     .update({ name, startDate, endDate, town })
     .then(result => res.send(result))
     .catch(error => console.error(error));
-  // addIfDefined(updateData, newName, "name");
-  // addIfDefined(updateData, startDate, "startDate");
-  // addIfDefined(updateData, endDate, "endDate");
-  // addIfDefined(updateData, town, "town");
 });
 
 export default tripRouter;
