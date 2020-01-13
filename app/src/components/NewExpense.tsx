@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import BaseButton from "./BaseButton";
 import LoadingOverlay from "./LoadingOverlay";
 import LabeledInput from "./LabeledInput";
@@ -34,6 +34,12 @@ const NewExpense: React.FC<Props> = ({
     tripId: "",
     categoryId: ""
   };
+  useEffect(() => {
+    setSelectedCategory(categories[0]?.id);
+  }, [categories]);
+  useEffect(() => {
+    setSelectedTrip(trips[0]?.id);
+  }, [trips]);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     ""
   );

@@ -10,6 +10,7 @@ import NewCategory from "./components/NewCategory";
 import firebase from "firebase/app";
 import "firebase/auth";
 import CategoriesList from "./components/CategoriesList";
+import MessagesHandler from "./components/MessagesHandler";
 
 interface Props {
   getTrips: Function;
@@ -39,6 +40,7 @@ const App: React.FC<Props> = ({ getTrips, getCategories }) => {
         <BaseButton cssClasses="w-24 ml-auto mt-4 mr-4" clickHandler={signIn}>
           Sign in
         </BaseButton>
+        <MessagesHandler />
         <NewTrip />
         <NewCategory />
         <CategoriesList />

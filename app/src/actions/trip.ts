@@ -22,7 +22,7 @@ export const getTrips = () => async (dispatch: Dispatch<any>) => {
     });
   } catch (error) {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't load the trips: ${error}` }
     });
   }
@@ -51,7 +51,7 @@ export const createTrip = (payload: CreateTripBody) => async (
     });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't create ${name} trip` }
     });
   }
@@ -74,7 +74,7 @@ export const updateTrip = (payload: UpdateTripBody) => async (
     });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't update ${payload.id} trip` }
     });
   }
@@ -96,9 +96,13 @@ export const deleteTrip = (payload: DeleteTripBody) => async (
       type: ActionTypes.DELETE_TRIP_SUCCEEDED,
       payload
     });
+    dispatch({
+      type: ActionTypes.SHOW_MESSAGE,
+      payload: { type: "info", content: `Got ${id} trip` }
+    });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't delete ${id} trip` }
     });
   }

@@ -13,6 +13,20 @@ const categoriesReducer: Reducer<any, ReducerArguments> = (
       return categories;
     case ActionTypes.GET_CATEGORIES_SUCCEEDED:
       return payload;
+    case ActionTypes.CREATE_CATEGORY_REQUESTED:
+      return categories;
+    case ActionTypes.CREATE_CATEGORY_SUCCEEDED:
+      return [...categories, payload];
+    case ActionTypes.UPDATE_CATEGORY_REQUESTED:
+      return categories;
+    case ActionTypes.UPDATE_CATEGORY_SUCCEEDED:
+      return categories.map(category =>
+        category.id === payload.id ? payload : category
+      );
+    case ActionTypes.DELETE_CATEGORY_REQUESTED:
+      return categories;
+    case ActionTypes.DELETE_CATEGORY_SUCCEEDED:
+      return categories.filter(category => category.id !== payload.id);
     default:
       return categories;
   }

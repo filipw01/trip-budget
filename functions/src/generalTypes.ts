@@ -20,6 +20,7 @@ export interface Category {
   color: string;
 }
 export interface Message {
+  id: string;
   content: string;
   type: MessageTypes;
 }

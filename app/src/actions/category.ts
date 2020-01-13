@@ -22,7 +22,7 @@ export const getCategories = () => async (dispatch: Dispatch<any>) => {
     });
   } catch (error) {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't load the trips: ${error}` }
     });
   }
@@ -46,7 +46,7 @@ export const createCategory = (payload: CreateCategoryBody) => async (
     });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't create ${name} category` }
     });
   }
@@ -69,8 +69,11 @@ export const updateCategory = (payload: UpdateCategoryBody) => async (
     });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
-      payload: { type: "error", content: `Couldn't update ${payload.id} category` }
+      type: ActionTypes.SHOW_MESSAGE,
+      payload: {
+        type: "error",
+        content: `Couldn't update ${payload.id} category`
+      }
     });
   }
 };
@@ -93,7 +96,7 @@ export const deleteCategory = (payload: DeleteCategoryBody) => async (
     });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't delete ${id} category` }
     });
   }

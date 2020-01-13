@@ -25,7 +25,7 @@ export const getExpenses = (payload: GetExpensesBody) => async (
     });
   } catch (error) {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't load the trips: ${error}` }
     });
   }
@@ -49,7 +49,7 @@ export const createExpense = (payload: CreateExpenseBody) => async (
     });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't create ${name} expense` }
     });
   }
@@ -72,7 +72,7 @@ export const updateExpense = (payload: UpdateExpenseBody) => async (
     });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't update ${payload.expenseId} expense` }
     });
   }
@@ -97,7 +97,7 @@ export const deleteExpense = (payload: DeleteExpenseBody) => async (
     });
   } catch {
     dispatch({
-      type: ActionTypes.OPERATION_FAILED,
+      type: ActionTypes.SHOW_MESSAGE,
       payload: { type: "error", content: `Couldn't delete ${expenseId} expense in ${tripId} trip` }
     });
   }
