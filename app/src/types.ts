@@ -11,6 +11,10 @@ export interface Store {
   categories: Array<Category>;
   trips: Array<Trip>;
   messages: Array<Message>;
+  currentlySelected: {
+    trip: Trip;
+    expense: Expense;
+  };
 }
 
 export interface ReducerArguments {

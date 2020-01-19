@@ -4,7 +4,8 @@ import { ActionTypes, getApiHeaders } from "./index";
 import {
   CreateTripBody,
   UpdateTripBody,
-  DeleteTripBody
+  DeleteTripBody,
+  Trip
 } from "../../../functions/src/generalTypes";
 
 export const getTrips = () => async (dispatch: Dispatch<any>) => {
@@ -16,10 +17,12 @@ export const getTrips = () => async (dispatch: Dispatch<any>) => {
       ...(await getApiHeaders()),
       method: "GET"
     });
+    const trips = await data.json();
     dispatch({
       type: ActionTypes.GET_TRIPS_SUCCEEDED,
-      payload: await data.json()
+      payload: trips
     });
+    dispatch(openTrip(trips[0]))
   } catch (error) {
     dispatch({
       type: ActionTypes.SHOW_MESSAGE,
@@ -106,4 +109,7 @@ export const deleteTrip = (payload: DeleteTripBody) => async (
       payload: { type: "error", content: `Couldn't delete ${id} trip` }
     });
   }
+};
+export const openTrip = (payload: Trip) => {
+  return { type: ActionTypes.OPEN_TRIP, payload };
 };

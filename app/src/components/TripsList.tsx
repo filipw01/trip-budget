@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { getCategories } from "../actions/category";
-import { getTrips, deleteTrip } from "../actions/trip";
+import { getTrips, deleteTrip, openTrip } from "../actions/trip";
 import BaseButton from "./BaseButton";
-import TripDetails from "./TripDetails";
 import LoadingOverlay from "./LoadingOverlay";
 import { Store } from "../types";
 import { DeleteTripBody, Trip } from "../../../functions/src/generalTypes";
+import { Link } from "react-router-dom";
 interface Props {
   trips: Array<Trip>;
   loading: boolean;
   deleteTrip: (payload: DeleteTripBody) => any;
   getTrips: Function;
   getCategories: Function;
+  openTrip: Function;
 }
 
 const TripsList: React.FC<Props> = ({
@@ -20,9 +21,9 @@ const TripsList: React.FC<Props> = ({
   loading,
   deleteTrip,
   getTrips,
-  getCategories
+  getCategories,
+  openTrip
 }) => {
-  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
   return (
     <LoadingOverlay active={loading}>
       <BaseButton clickHandler={() => getTrips() && getCategories()}>
@@ -34,8 +35,9 @@ const TripsList: React.FC<Props> = ({
           : trips.length === 0
           ? "No data"
           : trips.map(trip => (
-              <li
-                onClick={() => setSelectedTrip(trip)}
+              <Link
+                to="/trip"
+                onClick={() => openTrip(trip)}
                 className="flex justify-between px-6 py-4 border border-gray-700"
                 key={trip.id}
               >
@@ -47,9 +49,8 @@ const TripsList: React.FC<Props> = ({
                 >
                   Delete
                 </BaseButton>
-              </li>
+              </Link>
             ))}
-        {selectedTrip ? <TripDetails trip={selectedTrip} /> : null}
       </ul>
     </LoadingOverlay>
   );
@@ -63,7 +64,8 @@ const mapStateToProps = (state: Store) => ({
 const mapDispatchToProps = {
   getTrips,
   getCategories,
-  deleteTrip
+  deleteTrip,
+  openTrip
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TripsList);

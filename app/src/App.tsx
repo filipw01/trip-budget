@@ -1,16 +1,13 @@
 import React, { useEffect } from "react";
 import BaseButton from "./components/BaseButton";
-import TripsList from "./components/TripsList";
 import { getCategories } from "./actions/category";
 import { getTrips } from "./actions/trip";
 import { connect } from "react-redux";
-import NewTrip from "./components/NewTrip";
-import NewExpense from "./components/NewExpense";
-import NewCategory from "./components/NewCategory";
 import firebase from "firebase/app";
 import "firebase/auth";
-import CategoriesList from "./components/CategoriesList";
-import MessagesHandler from "./components/MessagesHandler";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Trips from "./routes/Trips";
+import Trip from "./routes/Trip";
 
 interface Props {
   getTrips: Function;
@@ -35,19 +32,26 @@ const App: React.FC<Props> = ({ getTrips, getCategories }) => {
   };
 
   return (
-    <div>
+    <BrowserRouter>
       <header className="flex flex-col">
-        <BaseButton cssClasses="w-24 ml-auto mt-4 mr-4" clickHandler={signIn}>
-          Sign in
-        </BaseButton>
-        <MessagesHandler />
-        <NewTrip />
-        <NewCategory />
-        <CategoriesList />
-        <NewExpense />
-        <TripsList />
+        <nav>
+          <BaseButton cssClasses="w-24 ml-auto mt-4 mr-4" clickHandler={signIn}>
+            Sign in
+          </BaseButton>
+          settings
+        </nav>
       </header>
-    </div>
+      <div>
+        <Switch>
+          <Route path="/trip">
+            <Trip />
+          </Route>
+          <Route path="/">
+            <Trips />
+          </Route>
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
 };
 
