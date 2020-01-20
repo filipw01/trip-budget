@@ -1,17 +1,25 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getCategories } from "../actions/category";
-import { getTrips, deleteTrip, openTrip } from "../actions/trip";
+import {
+  getTrips,
+  deleteTrip,
+  openTrip,
+  moreTrips,
+  moreTripsArguments
+} from "../actions/trip";
 import BaseButton from "./BaseButton";
 import LoadingOverlay from "./LoadingOverlay";
 import { Store } from "../types";
 import { DeleteTripBody, Trip } from "../../../functions/src/generalTypes";
 import { Link } from "react-router-dom";
+
 interface Props {
   trips: Array<Trip>;
   loading: boolean;
   deleteTrip: (payload: DeleteTripBody) => any;
   getTrips: Function;
+  moreTrips: (payload: moreTripsArguments) => any;
   getCategories: Function;
   openTrip: Function;
 }
@@ -22,12 +30,16 @@ const TripsList: React.FC<Props> = ({
   deleteTrip,
   getTrips,
   getCategories,
-  openTrip
+  openTrip,
+  moreTrips
 }) => {
   return (
     <LoadingOverlay active={loading}>
       <BaseButton clickHandler={() => getTrips() && getCategories()}>
         Refresh
+      </BaseButton>
+      <BaseButton clickHandler={() => moreTrips({ offset: trips.length })}>
+        More
       </BaseButton>
       <ul className="max-w-sm">
         {loading
@@ -63,6 +75,7 @@ const mapStateToProps = (state: Store) => ({
 
 const mapDispatchToProps = {
   getTrips,
+  moreTrips,
   getCategories,
   deleteTrip,
   openTrip

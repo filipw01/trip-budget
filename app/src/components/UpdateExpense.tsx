@@ -65,7 +65,7 @@ const UpdateExpense: React.FC<Props> = ({ updateExpense, expense, trip }) => {
             name: nameField?.current?.value,
             date: dateField?.current?.value,
             description: descriptionField?.current?.value,
-            price: priceField?.current?.value
+            price: Number(priceField?.current?.value)
           })
         }
       >

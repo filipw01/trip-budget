@@ -2,7 +2,8 @@ export interface Expense {
   id: string;
   categoryId: string;
   name: string;
-  price: string;
+  price: number;
+  currency: string;
   description: string;
   date: string;
 }
@@ -34,7 +35,8 @@ export interface CreateExpenseBody {
   date: string;
   name: string;
   description: string;
-  price: string;
+  price: number;
+  currency: string;
 }
 
 export interface DeleteExpenseBody {
@@ -49,7 +51,8 @@ export interface UpdateExpenseBody {
   date?: string;
   name?: string;
   description?: string;
-  price?: string;
+  price?: number;
+  currency?: string;
 }
 
 export interface CreateCategoryBody {

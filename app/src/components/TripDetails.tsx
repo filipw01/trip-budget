@@ -16,7 +16,7 @@ interface Props {
   trip: Trip;
   expenses: Array<Expense>;
   deleteExpense: (payload: DeleteExpenseBody) => any;
-  getExpenses: (payload: GetExpensesBody) => any;
+  getExpenses: (payload: { offset: number } & GetExpensesBody) => any;
 }
 
 const TripDetails: React.FC<Props> = ({
@@ -26,7 +26,7 @@ const TripDetails: React.FC<Props> = ({
   expenses
 }) => {
   useEffect(() => {
-    getExpenses({ tripId: trip.id });
+    getExpenses({ tripId: trip.id, offset: 0 });
   }, [getExpenses, trip.id]);
   return (
     <div>
@@ -54,6 +54,13 @@ const TripDetails: React.FC<Props> = ({
           </BaseButton>
         </div>
       ))}
+      <BaseButton
+        clickHandler={() =>
+          getExpenses({ tripId: trip.id, offset: expenses.length })
+        }
+      >
+        More
+      </BaseButton>
     </div>
   );
 };

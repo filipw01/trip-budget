@@ -13,6 +13,10 @@ const tripsReducer: Reducer<any, ReducerArguments> = (
       return trips;
     case ActionTypes.GET_TRIPS_SUCCEEDED:
       return payload;
+    case ActionTypes.MORE_TRIPS_REQUESTED:
+      return trips;
+    case ActionTypes.MORE_TRIPS_SUCCEEDED:
+      return [...trips, ...payload];
     case ActionTypes.CREATE_TRIP_REQUESTED:
       return trips;
     case ActionTypes.CREATE_TRIP_SUCCEEDED:

@@ -20,7 +20,8 @@ export const defaultStore: Store = {
       categoryId: "0",
       date: "0",
       description: "0",
-      price: "0"
+      price: 0,
+      currency: "PLN"
     }
   }
 };

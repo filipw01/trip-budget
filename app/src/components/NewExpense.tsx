@@ -30,7 +30,7 @@ const NewExpense: React.FC<Props> = ({
     date: "2020-12-12",
     name: "",
     description: "",
-    price: "",
+    price: 0,
     tripId: "",
     categoryId: ""
   };
@@ -97,7 +97,8 @@ const NewExpense: React.FC<Props> = ({
               date: dateField?.current?.value || defaults.date,
               description:
                 descriptionField?.current?.value || defaults.description,
-              price: priceField?.current?.value || defaults.price
+              price: Number(priceField?.current?.value) || defaults.price,
+              currency: "PLN"
             })
           }
         >

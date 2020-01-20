@@ -8,17 +8,20 @@ import {
   GetExpensesBody
 } from "../../../functions/src/generalTypes";
 
-export const getExpenses = (payload: GetExpensesBody) => async (
-  dispatch: Dispatch<any>
-) => {
+export const getExpenses = (
+  payload: { offset: number } & GetExpensesBody
+) => async (dispatch: Dispatch<any>) => {
   dispatch({
     type: ActionTypes.GET_EXPENSES_REQUESTED
   });
   try {
-    const data = await fetch(`${baseUrl}/expense/${payload.tripId}`, {
-      ...(await getApiHeaders()),
-      method: "GET"
-    });
+    const data = await fetch(
+      `${baseUrl}/expense/${payload.tripId}?offset=${payload.offset}`,
+      {
+        ...(await getApiHeaders()),
+        method: "GET"
+      }
+    );
     dispatch({
       type: ActionTypes.GET_EXPENSES_SUCCEEDED,
       payload: await data.json()
@@ -73,7 +76,10 @@ export const updateExpense = (payload: UpdateExpenseBody) => async (
   } catch {
     dispatch({
       type: ActionTypes.SHOW_MESSAGE,
-      payload: { type: "error", content: `Couldn't update ${payload.expenseId} expense` }
+      payload: {
+        type: "error",
+        content: `Couldn't update ${payload.expenseId} expense`
+      }
     });
   }
 };
@@ -98,7 +104,10 @@ export const deleteExpense = (payload: DeleteExpenseBody) => async (
   } catch {
     dispatch({
       type: ActionTypes.SHOW_MESSAGE,
-      payload: { type: "error", content: `Couldn't delete ${expenseId} expense in ${tripId} trip` }
+      payload: {
+        type: "error",
+        content: `Couldn't delete ${expenseId} expense in ${tripId} trip`
+      }
     });
   }
 };

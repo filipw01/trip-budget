@@ -8,6 +8,34 @@ import {
   Trip
 } from "../../../functions/src/generalTypes";
 
+export interface moreTripsArguments {
+  offset: number;
+}
+
+export const moreTrips = (payload: moreTripsArguments) => async (
+  dispatch: Dispatch<any>
+) => {
+  const { offset } = payload;
+  dispatch({
+    type: ActionTypes.MORE_TRIPS_REQUESTED
+  });
+  try {
+    const data = await fetch(`${baseUrl}/trip/more?offset=${offset}`, {
+      ...(await getApiHeaders()),
+      method: "GET"
+    });
+    const trips = await data.json();
+    dispatch({
+      type: ActionTypes.MORE_TRIPS_SUCCEEDED,
+      payload: trips
+    });
+  } catch (error) {
+    dispatch({
+      type: ActionTypes.SHOW_MESSAGE,
+      payload: { type: "error", content: `Couldn't load the trips: ${error}` }
+    });
+  }
+};
 export const getTrips = () => async (dispatch: Dispatch<any>) => {
   dispatch({
     type: ActionTypes.GET_TRIPS_REQUESTED
@@ -17,12 +45,12 @@ export const getTrips = () => async (dispatch: Dispatch<any>) => {
       ...(await getApiHeaders()),
       method: "GET"
     });
-    const trips = await data.json();
+    const aggregated = await data.json();
     dispatch({
       type: ActionTypes.GET_TRIPS_SUCCEEDED,
-      payload: trips
+      payload: aggregated.trips
     });
-    dispatch(openTrip(trips[0]))
+    dispatch(openTrip(aggregated.trips[0]));
   } catch (error) {
     dispatch({
       type: ActionTypes.SHOW_MESSAGE,

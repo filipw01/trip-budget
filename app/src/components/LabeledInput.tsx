@@ -3,7 +3,7 @@ import React, { useState, forwardRef, Ref, useEffect } from "react";
 interface Props {
   label: string;
   type: "text" | "number" | "date";
-  defaultValue?: string;
+  defaultValue?: string | number;
   ref?: Ref<HTMLInputElement>;
 }
 
