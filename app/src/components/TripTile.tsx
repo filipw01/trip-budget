@@ -10,19 +10,24 @@ interface Props {
 }
 
 const TripsList: React.FC<Props> = ({ trip }) => {
-  console.log(trip.backgroundUrl);
   return (
-    <li key={trip.id}>
-      <Link
-        to="/trip"
-        onClick={() => openTrip(trip)}
-        key={trip.id}
-        style={{ backgroundImage: `url('${trip.backgroundUrl}')` }}
-        className="p-4 rounded-lg bg-gray-600 block h-48 bg-cover"
-      >
-        {trip.name}
-      </Link>
-    </li>
+    <Link
+      to="/trip"
+      onClick={() => openTrip(trip)}
+      key={trip.id}
+      style={{
+        backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 57.81%, rgba(0, 0, 0, 0.17) 100%), url('${trip.backgroundUrl}')`
+      }}
+      className="p-4 rounded-lg bg-gray-600 block bg-cover bg-center flex flex-col justify-between h-full"
+    >
+      <div>
+        <h2 className="text-xl font-semibold inline">{trip.name}</h2>
+        <span className="ml-1 italic">{trip.town}</span>
+      </div>
+      <div className="self-end">
+        {trip.startDate}-{trip.endDate}
+      </div>
+    </Link>
   );
 };
 
