@@ -99,8 +99,8 @@ tripRouter.patch("/", async (req: UpdateTripRequest, res: Response) => {
     return transaction.get(aggregatedRef).then(doc => {
       const trips = doc.data()?.trips;
       const latestTrips = [
-        ...trips.filter((trip: Trip) => trip.id !== doc.id),
-        { id: doc.id, name, startDate, endDate, town }
+        ...trips.filter((trip: Trip) => trip.id !== id),
+        { id: id, name, startDate, endDate, town }
       ]
         .sort(
           (a, b) =>
