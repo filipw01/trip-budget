@@ -13,7 +13,14 @@ export const defaultStore: Store = {
   loading: false,
   messages: [],
   currentlySelected: {
-    trip: { id: "0", endDate: "0", startDate: "0", name: "0", town: "0" },
+    trip: {
+      id: "0",
+      endDate: "0",
+      startDate: "0",
+      name: "0",
+      town: "0",
+      backgroundUrl: ""
+    },
     expense: {
       name: "0",
       id: "0",

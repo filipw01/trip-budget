@@ -3,34 +3,28 @@ import { connect } from "react-redux";
 import { getCategories } from "../actions/category";
 import {
   getTrips,
-  deleteTrip,
-  openTrip,
   moreTrips,
   moreTripsArguments
 } from "../actions/trip";
 import BaseButton from "./BaseButton";
+import TripTile from "./TripTile";
 import LoadingOverlay from "./LoadingOverlay";
 import { Store } from "../types";
-import { DeleteTripBody, Trip } from "../../../functions/src/generalTypes";
-import { Link } from "react-router-dom";
+import { Trip } from "../../../functions/src/generalTypes";
 
 interface Props {
   trips: Array<Trip>;
   loading: boolean;
-  deleteTrip: (payload: DeleteTripBody) => any;
   getTrips: Function;
   moreTrips: (payload: moreTripsArguments) => any;
   getCategories: Function;
-  openTrip: Function;
 }
 
 const TripsList: React.FC<Props> = ({
   trips,
   loading,
-  deleteTrip,
   getTrips,
   getCategories,
-  openTrip,
   moreTrips
 }) => {
   return (
@@ -41,28 +35,12 @@ const TripsList: React.FC<Props> = ({
       <BaseButton clickHandler={() => moreTrips({ offset: trips.length })}>
         More
       </BaseButton>
-      <ul className="max-w-sm">
+      <ul className="grid grid-cols-3 gap-4">
         {loading
           ? "Loading"
           : trips.length === 0
           ? "No data"
-          : trips.map(trip => (
-              <Link
-                to="/trip"
-                onClick={() => openTrip(trip)}
-                className="flex justify-between px-6 py-4 border border-gray-700"
-                key={trip.id}
-              >
-                {trip.name}
-                <BaseButton
-                  clickHandler={e =>
-                    deleteTrip({ id: trip.id }) && e.stopPropagation()
-                  }
-                >
-                  Delete
-                </BaseButton>
-              </Link>
-            ))}
+          : trips.map(trip => <TripTile trip={trip} />)}
       </ul>
     </LoadingOverlay>
   );
@@ -77,8 +55,6 @@ const mapDispatchToProps = {
   getTrips,
   moreTrips,
   getCategories,
-  deleteTrip,
-  openTrip
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TripsList);

@@ -13,6 +13,7 @@ export interface Trip {
   startDate: string;
   endDate: string;
   town: string;
+  backgroundUrl: string;
 }
 export interface Category {
   id: string;
@@ -75,6 +76,7 @@ export interface CreateTripBody {
   startDate: string;
   endDate: string;
   town: string;
+  backgroundUrl: string | null;
 }
 
 export interface DeleteTripBody {
@@ -87,4 +89,5 @@ export interface UpdateTripBody {
   startDate?: string;
   endDate?: string;
   town?: string;
+  backgroundUrl?: string;
 }

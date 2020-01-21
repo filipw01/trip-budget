@@ -26,8 +26,8 @@ const NewCategory: React.FC<Props> = ({ createCategory }) => {
         cssClasses="mt-4"
         clickHandler={() =>
           createCategory({
-            name: nameField?.current?.value || defaults.name,
-            color: colorField?.current?.value || defaults.color
+            name: nameField?.current?.value ?? defaults.name,
+            color: colorField?.current?.value ?? defaults.color
           })
         }
       >

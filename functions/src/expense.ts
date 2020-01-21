@@ -68,7 +68,7 @@ expenseRouter.put("/", async (req: CreateExpenseRequest, res: Response) => {
         .set(docRef, { categoryId, name, date, description, price });
     });
   })
-    .then((result: any) => res.send(result))
+    .then(result => res.send(result))
     .catch(error => console.error(error));
 });
 

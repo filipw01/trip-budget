@@ -42,13 +42,14 @@ tripRouter.get("/more", (req: RequestWithCredentials, res: Response) => {
 });
 
 tripRouter.put("/", async (req: CreateTripRequest, res: Response) => {
-  const { name, startDate, endDate, town } = req.body;
+  const { name, startDate, endDate, town, backgroundUrl } = req.body;
   const docRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
     .doc();
   const aggregatedRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
     .doc("aggregated");
+  console.log(req.body.backgroundUrl);
   db.runTransaction(transaction => {
     return transaction.get(aggregatedRef).then(doc => {
       const trips = doc.data()?.trips;
@@ -58,7 +59,8 @@ tripRouter.put("/", async (req: CreateTripRequest, res: Response) => {
           name,
           startDate,
           endDate,
-          town
+          town,
+          backgroundUrl
         })
         .update(aggregatedRef, {
           trips: [
@@ -69,6 +71,7 @@ tripRouter.put("/", async (req: CreateTripRequest, res: Response) => {
               startDate,
               endDate,
               town,
+              backgroundUrl,
               expenses: { total: 0, currency: "PLN" }
             }
           ]
@@ -82,12 +85,12 @@ tripRouter.put("/", async (req: CreateTripRequest, res: Response) => {
         });
     });
   })
-    .then(result => res.send(result))
+    .then(() => res.send({id: docRef.id}))
     .catch(error => console.error(error));
 });
 
 tripRouter.patch("/", async (req: UpdateTripRequest, res: Response) => {
-  const { name, startDate, endDate, town, id } = req.body;
+  const { name, startDate, endDate, town, id, backgroundUrl } = req.body;
   const tripRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
     .doc(id);
@@ -100,7 +103,7 @@ tripRouter.patch("/", async (req: UpdateTripRequest, res: Response) => {
       const trips = doc.data()?.trips;
       const latestTrips = [
         ...trips.filter((trip: Trip) => trip.id !== id),
-        { id: id, name, startDate, endDate, town }
+        { id: id, name, startDate, endDate, town, backgroundUrl }
       ]
         .sort(
           (a, b) =>
@@ -113,7 +116,7 @@ tripRouter.patch("/", async (req: UpdateTripRequest, res: Response) => {
         .update(aggregatedRef, {
           trips: latestTrips
         })
-        .update(tripRef, { name, startDate, endDate, town });
+        .update(tripRef, { name, startDate, endDate, town, backgroundUrl });
     });
   })
     .then(result => res.send(result))

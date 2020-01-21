@@ -72,7 +72,7 @@ export const createTrip = (payload: CreateTripBody) => async (
       body: JSON.stringify(payload)
     });
     const jsonResponse = await response.json();
-    const id = jsonResponse._path.segments[1];
+    const { id } = jsonResponse;
     dispatch({
       type: ActionTypes.CREATE_TRIP_SUCCEEDED,
       payload: {
@@ -80,10 +80,10 @@ export const createTrip = (payload: CreateTripBody) => async (
         ...payload
       }
     });
-  } catch {
+  } catch (e) {
     dispatch({
       type: ActionTypes.SHOW_MESSAGE,
-      payload: { type: "error", content: `Couldn't create ${name} trip` }
+      payload: { type: "error", content: `Couldn't create ${name} trip ${e}` }
     });
   }
 };

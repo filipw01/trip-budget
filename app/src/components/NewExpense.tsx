@@ -91,13 +91,13 @@ const NewExpense: React.FC<Props> = ({
           disabled={loading}
           clickHandler={() =>
             createExpense({
-              tripId: selectedTrip || defaults.tripId,
-              categoryId: selectedCategory || defaults.categoryId,
-              name: nameField?.current?.value || defaults.name,
-              date: dateField?.current?.value || defaults.date,
+              tripId: selectedTrip ?? defaults.tripId,
+              categoryId: selectedCategory ?? defaults.categoryId,
+              name: nameField?.current?.value ?? defaults.name,
+              date: dateField?.current?.value ?? defaults.date,
               description:
-                descriptionField?.current?.value || defaults.description,
-              price: Number(priceField?.current?.value) || defaults.price,
+                descriptionField?.current?.value ?? defaults.description,
+              price: Number(priceField?.current?.value) ?? defaults.price,
               currency: "PLN"
             })
           }

@@ -47,11 +47,13 @@ const CategoriesList: React.FC<Props> = ({
             clickHandler={() =>
               updateCategory({
                 id: category.id,
-                name: nameField?.current?.value || category.name,
-                color: colorField?.current?.value || category.color
+                name: nameField?.current?.value ?? category.name,
+                color: colorField?.current?.value ?? category.color
               })
             }
-          >Update category</BaseButton>
+          >
+            Update category
+          </BaseButton>
           {category.name}
           <BaseButton clickHandler={() => deleteCategory({ id: category.id })}>
             Delete

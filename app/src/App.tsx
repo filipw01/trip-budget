@@ -8,6 +8,7 @@ import "firebase/auth";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Trips from "./routes/Trips";
 import Trip from "./routes/Trip";
+import MessagesHandler from "./components/MessagesHandler";
 
 interface Props {
   getTrips: Function;
@@ -41,6 +42,7 @@ const App: React.FC<Props> = ({ getTrips, getCategories }) => {
           settings
         </nav>
       </header>
+      <MessagesHandler />
       <div>
         <Switch>
           <Route path="/trip">

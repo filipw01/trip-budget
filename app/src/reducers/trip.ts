@@ -31,7 +31,8 @@ const tripsReducer: Reducer<any, ReducerArguments> = (
               name: payload.name,
               startDate: payload.startDate,
               endDate: payload.endDate,
-              town: payload.town
+              town: payload.town,
+              backgroundUrl: payload.backgroundUrl
             }
           : trip
       );

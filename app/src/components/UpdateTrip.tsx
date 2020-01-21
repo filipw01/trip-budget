@@ -1,20 +1,53 @@
 import React, { useRef } from "react";
 import { updateTrip } from "../actions/trip";
+import { showMessage } from "../actions/messages";
 import { connect } from "react-redux";
 import LabeledInput from "./LabeledInput";
 import BaseButton from "./BaseButton";
-import { UpdateTripBody, Trip } from "../../../functions/src/generalTypes";
+import {
+  UpdateTripBody,
+  Trip,
+  Message
+} from "../../../functions/src/generalTypes";
+import firebase from "firebase/app";
+import "firebase/storage";
+import { generateId } from "../helpers";
 
 interface Props {
   trip: Trip;
   updateTrip: (payload: UpdateTripBody) => any;
+  showMessage: (payload: Message) => any;
 }
 
-const UpdateTrip: React.FC<Props> = ({ updateTrip, trip }) => {
+const UpdateTrip: React.FC<Props> = ({ updateTrip, trip, showMessage }) => {
   const nameField = useRef<HTMLInputElement>(null);
   const startDateField = useRef<HTMLInputElement>(null);
   const endDateField = useRef<HTMLInputElement>(null);
   const townField = useRef<HTMLInputElement>(null);
+  const backgroundField = useRef<HTMLInputElement>(null);
+
+  const handleUpdate = () => {
+    const tripFile = backgroundField?.current?.files?.[0];
+    let backgroundUrl;
+    if (tripFile !== undefined) {
+      firebase
+        .storage()
+        .ref()
+        .put(tripFile as File)
+        .then(snapshot => (backgroundUrl = snapshot.downloadURL))
+        .catch(error =>
+          showMessage({ type: "error", content: error, id: generateId() })
+        );
+    }
+    updateTrip({
+      id: trip.id,
+      name: nameField?.current?.value,
+      startDate: startDateField?.current?.value,
+      endDate: endDateField?.current?.value,
+      town: townField?.current?.value,
+      backgroundUrl
+    });
+  };
 
   return (
     <div className="flex flex-col items-center mb-4">
@@ -42,19 +75,8 @@ const UpdateTrip: React.FC<Props> = ({ updateTrip, trip }) => {
         defaultValue={trip.town}
         ref={townField}
       />
-
-      <BaseButton
-        cssClasses="mt-4"
-        clickHandler={() =>
-          updateTrip({
-            id: trip.id,
-            name: nameField?.current?.value,
-            startDate: startDateField?.current?.value,
-            endDate: endDateField?.current?.value,
-            town: townField?.current?.value
-          })
-        }
-      >
+      <input type="file" ref={backgroundField} />
+      <BaseButton cssClasses="mt-4" clickHandler={handleUpdate}>
         Update
       </BaseButton>
     </div>
@@ -62,7 +84,8 @@ const UpdateTrip: React.FC<Props> = ({ updateTrip, trip }) => {
 };
 
 const mapDispatchToProps = {
-  updateTrip
+  updateTrip,
+  showMessage
 };
 
 export default connect(null, mapDispatchToProps)(UpdateTrip);
