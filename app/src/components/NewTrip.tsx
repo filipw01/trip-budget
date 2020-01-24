@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { createTrip } from "../actions/trip";
 import { showMessage } from "../actions/messages";
 import BaseButton from "./BaseButton";
+import FileInput from "./FileInput";
 import LoadingOverlay from "./LoadingOverlay";
 import LabeledInput from "./LabeledInput";
 import { Store } from "../types";
@@ -80,7 +81,7 @@ const NewTrip: React.FC<Props> = ({ createTrip, loading, showMessage }) => {
           defaultValue={"2020-12-20"}
         />
         <LabeledInput label="Town" type="text" ref={townField} />
-        <input type="file" ref={backgroundField} />
+        <FileInput text="Dodaj zdjęcie podróży" ref={backgroundField} />
         <BaseButton
           cssClasses="mt-4"
           disabled={loading}

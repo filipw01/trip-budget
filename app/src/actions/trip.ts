@@ -80,6 +80,10 @@ export const createTrip = (payload: CreateTripBody) => async (
         ...payload
       }
     });
+    dispatch({
+      type: ActionTypes.SHOW_MESSAGE,
+      payload: { type: "success", content: `Created trip: ${payload.name}` }
+    });
   } catch (e) {
     dispatch({
       type: ActionTypes.SHOW_MESSAGE,
@@ -102,6 +106,10 @@ export const updateTrip = (payload: UpdateTripBody) => async (
     dispatch({
       type: ActionTypes.UPDATE_TRIP_SUCCEEDED,
       payload
+    });
+    dispatch({
+      type: ActionTypes.SHOW_MESSAGE,
+      payload: { type: "success", content: `Created trip: ${payload.name}` }
     });
   } catch {
     dispatch({

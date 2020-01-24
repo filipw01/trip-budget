@@ -85,12 +85,12 @@ tripRouter.put("/", async (req: CreateTripRequest, res: Response) => {
         });
     });
   })
-    .then(() => res.send({id: docRef.id}))
+    .then(() => res.send({ id: docRef.id }))
     .catch(error => console.error(error));
 });
 
 tripRouter.patch("/", async (req: UpdateTripRequest, res: Response) => {
-  const { name, startDate, endDate, town, id, backgroundUrl } = req.body;
+  const { name, startDate, endDate, town, id, backgroundUrl = "" } = req.body;
   const tripRef = db
     .collection(req.user.name === "Anonymous" ? "public_trips" : "trips")
     .doc(id);

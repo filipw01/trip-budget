@@ -41,7 +41,7 @@ const TripsList: React.FC<Props> = ({
           style={{
             backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 57.81%, rgba(0, 0, 0, 0.17) 100%), url('https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=240&q=80')`
           }}
-          className="rounded-lg bg-cover bg-center h-48 w-64 p-4 flex flex-col justify-center items-center"
+          className="rounded-lg bg-cover bg-center h-48 w-64 p-4 flex flex-col justify-center items-center cursor-pointer"
           onClick={() => setAddingTrip(true)}
         >
           <div style={{ lineHeight: "0.75" }} className="text-6xl">
@@ -50,8 +50,15 @@ const TripsList: React.FC<Props> = ({
           <div className="text-2xl">Add trip</div>
         </li>
         {addingTrip ? (
-          <div className="fixed bg-red-900">
-            <div onClick={() => setAddingTrip(false)}>close</div>
+          <div
+            style={{
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)"
+            }}
+            className="fixed bg-blue-700 rounded-lg p-4"
+          >
+            <button onClick={() => setAddingTrip(false)}>close</button>
             <NewTrip />
           </div>
         ) : null}

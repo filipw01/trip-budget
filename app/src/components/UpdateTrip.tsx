@@ -33,6 +33,7 @@ const UpdateTrip: React.FC<Props> = ({ updateTrip, trip, showMessage }) => {
       firebase
         .storage()
         .ref()
+        .child(tripFile.name)
         .put(tripFile as File)
         .then(snapshot => (backgroundUrl = snapshot.downloadURL))
         .catch(error =>

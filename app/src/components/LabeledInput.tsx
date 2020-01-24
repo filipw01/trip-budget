@@ -17,7 +17,7 @@ const LabeledInput: React.FC<Props> = forwardRef(
       <label className="block">
         {label}
         <input
-          className="h-8 border-2 border-black rounded-lg block px-2"
+          className="h-8 border-2 border-black rounded-lg block px-2 text-black"
           type={type}
           ref={ref}
           value={value}

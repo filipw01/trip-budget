@@ -19,8 +19,8 @@ const BaseButton: React.FC<Props> = ({
       disabled={disabled}
       className={
         disabled
-          ? `bg-blue-200 border-2 border-solid border-blue-200 rounded py-1 px-3 leading-none cursor-not-allowed ${cssClasses}`
-          : `bg-blue-400 border-2 border-solid border-blue-400 rounded py-1 px-3 hover:bg-white leading-none ${cssClasses}`
+          ? `bg-gray-600 border-2 border-solid border-black rounded py-1 px-3 leading-none cursor-not-allowed ${cssClasses}`
+          : `bg-white text-black border-2 border-solid border-black rounded py-1 px-3 hover:bg-black hover:text-white leading-none ${cssClasses}`
       }
       onClick={clickHandler}
     >
