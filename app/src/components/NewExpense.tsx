@@ -3,7 +3,7 @@ import BaseButton from "./BaseButton";
 import LoadingOverlay from "./LoadingOverlay";
 import LabeledInput from "./LabeledInput";
 import { connect } from "react-redux";
-import { createExpense } from "../actions/expense";
+import { createExpense } from "../redux/expense";
 import { Store } from "../types";
 import LabeledSelect from "./LabeledSelect";
 import {

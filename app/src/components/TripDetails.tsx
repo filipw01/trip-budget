@@ -3,7 +3,7 @@ import { Store } from "../types";
 import BaseButton from "./BaseButton";
 import UpdateTrip from "./UpdateTrip";
 import { connect } from "react-redux";
-import { deleteExpense, getExpenses } from "../actions/expense";
+import { deleteExpense, getExpenses } from "../redux/expense";
 import UpdateExpense from "./UpdateExpense";
 import {
   DeleteExpenseBody,

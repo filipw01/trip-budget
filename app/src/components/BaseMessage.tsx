@@ -1,7 +1,7 @@
 import React from "react";
 import { Message } from "../../../functions/src/generalTypes";
 import { connect } from "react-redux";
-import { dismissMessage } from "../actions/messages";
+import { dismissMessage } from "../redux/messages";
 
 interface Props {
   message: Message;

@@ -3,7 +3,7 @@ import { Trip } from "../../../functions/src/generalTypes";
 import { Store } from "../types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { openTrip } from "../actions/trip";
+import { openTrip } from "../redux/trip";
 
 interface Props {
   trip: Trip;

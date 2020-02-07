@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import BaseButton from "./BaseButton";
 import LabeledInput from "./LabeledInput";
 import { connect } from "react-redux";
-import { createCategory } from "../actions/category";
+import { createCategory } from "../redux/category";
 import { CreateCategoryBody } from "../../../functions/src/generalTypes";
 
 interface Props {

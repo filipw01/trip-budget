@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { getCategories } from "../actions/category";
-import { getTrips, moreTrips, moreTripsArguments } from "../actions/trip";
+import { getCategories } from "../redux/category";
+import { getTrips, moreTrips, moreTripsArguments } from "../redux/trip";
 import BaseButton from "./BaseButton";
 import TripTile from "./TripTile";
 import LoadingOverlay from "./LoadingOverlay";

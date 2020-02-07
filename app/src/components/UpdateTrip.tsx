@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { updateTrip } from "../actions/trip";
-import { showMessage } from "../actions/messages";
+import { updateTrip } from "../redux/trip";
+import { showMessage } from "../redux/messages";
 import { connect } from "react-redux";
 import LabeledInput from "./LabeledInput";
 import BaseButton from "./BaseButton";

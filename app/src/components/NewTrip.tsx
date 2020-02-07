@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
-import { createTrip } from "../actions/trip";
-import { showMessage } from "../actions/messages";
+import { createTrip } from "../redux/trip";
+import { showMessage } from "../redux/messages";
 import BaseButton from "./BaseButton";
 import FileInput from "./FileInput";
 import LoadingOverlay from "./LoadingOverlay";

@@ -1,9 +1,8 @@
-import { ActionTypes } from "../actions/index";
 import { Reducer } from "react";
 import { ReducerArguments } from "../types";
-import { defaultStore } from "./index";
-import { Message } from "../../../functions/src/generalTypes";
 import { generateId } from "../helpers";
+import { ActionTypes, defaultStore } from "./index";
+import { Message } from "../../../functions/src/generalTypes";
 
 const messagesReducer: Reducer<any, ReducerArguments> = (
   messages: Array<Message> = defaultStore.messages,
@@ -19,3 +18,16 @@ const messagesReducer: Reducer<any, ReducerArguments> = (
   }
 };
 export default messagesReducer;
+
+export const showMessage = (payload: Message) => {
+  return {
+    type: ActionTypes.SHOW_MESSAGE,
+    payload
+  };
+};
+export const dismissMessage = (payload: Message) => {
+  return {
+    type: ActionTypes.HIDE_MESSAGE,
+    payload
+  };
+};

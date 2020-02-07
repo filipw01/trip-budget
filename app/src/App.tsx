@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import BaseButton from "./components/BaseButton";
-import { getCategories } from "./actions/category";
-import { getTrips } from "./actions/trip";
+import { getCategories } from "./redux/category";
+import { getTrips } from "./redux/trip";
 import { connect } from "react-redux";
 import firebase from "firebase/app";
 import "firebase/auth";

@@ -1,7 +1,6 @@
-import { ActionTypes } from "../actions/index";
+import { ActionTypes, defaultStore } from "./index";
 import { Reducer } from "react";
 import { ReducerArguments } from "../types";
-import { defaultStore } from "./index";
 import { Trip, Expense } from "../../../functions/src/generalTypes";
 
 interface currentlySelected {
@@ -9,7 +8,7 @@ interface currentlySelected {
   expense: Expense;
 }
 
-const currentlySelectedReducer: Reducer<any, ReducerArguments> = (
+export const currentlySelectedReducer: Reducer<any, ReducerArguments> = (
   currentlySelected: currentlySelected = defaultStore.currentlySelected,
   { type, payload }
 ): currentlySelected => {
@@ -20,4 +19,3 @@ const currentlySelectedReducer: Reducer<any, ReducerArguments> = (
       return currentlySelected;
   }
 };
-export default currentlySelectedReducer;

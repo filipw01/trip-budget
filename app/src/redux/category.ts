@@ -1,11 +1,42 @@
-import { Dispatch } from "react";
+import { Dispatch, Reducer } from "react";
 import { baseUrl } from "../config";
-import { ActionTypes, getApiHeaders } from "./index";
+import { ActionTypes, getApiHeaders, defaultStore } from "./index";
+import { ReducerArguments } from "../types";
 import {
+  Category,
   CreateCategoryBody,
   UpdateCategoryBody,
   DeleteCategoryBody
 } from "../../../functions/src/generalTypes";
+
+const categoriesReducer: Reducer<any, ReducerArguments> = (
+  categories: Array<Category> = defaultStore.categories,
+  { type, payload }
+): Array<Category> => {
+  switch (type) {
+    case ActionTypes.GET_CATEGORIES_REQUESTED:
+      return categories;
+    case ActionTypes.GET_CATEGORIES_SUCCEEDED:
+      return payload;
+    case ActionTypes.CREATE_CATEGORY_REQUESTED:
+      return categories;
+    case ActionTypes.CREATE_CATEGORY_SUCCEEDED:
+      return [...categories, payload];
+    case ActionTypes.UPDATE_CATEGORY_REQUESTED:
+      return categories;
+    case ActionTypes.UPDATE_CATEGORY_SUCCEEDED:
+      return categories.map(category =>
+        category.id === payload.id ? payload : category
+      );
+    case ActionTypes.DELETE_CATEGORY_REQUESTED:
+      return categories;
+    case ActionTypes.DELETE_CATEGORY_SUCCEEDED:
+      return categories.filter(category => category.id !== payload.id);
+    default:
+      return categories;
+  }
+};
+export default categoriesReducer
 
 export const getCategories = () => async (dispatch: Dispatch<any>) => {
   dispatch({
@@ -26,7 +57,7 @@ export const getCategories = () => async (dispatch: Dispatch<any>) => {
       payload: { type: "error", content: `Couldn't load the trips: ${error}` }
     });
   }
-};
+}; 
 export const createCategory = (payload: CreateCategoryBody) => async (
   dispatch: Dispatch<any>
 ) => {
