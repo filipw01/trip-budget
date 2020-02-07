@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import BaseButton from "./BaseButton";
+import BaseButton from "./BaseButton/BaseButton";
 import LabeledInput from "./LabeledInput";
 import { connect } from "react-redux";
 import { createCategory } from "../redux/category";

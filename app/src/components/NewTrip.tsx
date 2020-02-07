@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { connect } from "react-redux";
 import { createTrip } from "../redux/trip";
 import { showMessage } from "../redux/messages";
-import BaseButton from "./BaseButton";
+import BaseButton from "./BaseButton/BaseButton";
 import FileInput from "./FileInput";
 import LoadingOverlay from "./LoadingOverlay";
 import LabeledInput from "./LabeledInput";

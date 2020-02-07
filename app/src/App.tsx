@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import BaseButton from "./components/BaseButton";
+import BaseButton from "./components/BaseButton/BaseButton";
 import { getCategories } from "./redux/category";
 import { getTrips } from "./redux/trip";
 import { connect } from "react-redux";

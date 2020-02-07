@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Store } from "../types";
-import BaseButton from "./BaseButton";
+import BaseButton from "./BaseButton/BaseButton";
 import UpdateTrip from "./UpdateTrip";
 import { connect } from "react-redux";
 import { deleteExpense, getExpenses } from "../redux/expense";
