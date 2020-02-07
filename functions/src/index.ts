@@ -3,8 +3,8 @@ import { validateFirebaseIdToken } from "./middlewares/validateFirebaseIdToken";
 import tripRouter from "./trip";
 import expenseRouter from "./expense";
 import categoryRouter from "./category";
+import * as express from 'express'
 const cors = require("cors")({ origin: true });
-const express = require("express");
 const cookieParser = require("cookie-parser")();
 const app = express();
 

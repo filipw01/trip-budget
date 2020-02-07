@@ -1,6 +1,9 @@
 const admin = require("firebase-admin");
 const productionUsers = require("../../production-users.json");
 
+/**
+ * Middleware validating firebase id token to include only Filip and Agnieszka
+ */
 export const validateFirebaseIdToken = async (
   req: any,
   _res: any,
