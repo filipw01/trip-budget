@@ -65,3 +65,5 @@ node_modules/
 .env
 functions/trip-budget-27472.json
 functions/production-users.json
+
+.DS_Store
