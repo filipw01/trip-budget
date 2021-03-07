@@ -8,15 +8,11 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import { rootReducer } from "./redux";
 import thunk from "redux-thunk";
-import firebase from "firebase/app";
-import "firebase/auth";
-import firebaseConfig from "./firebaseConfig";
 
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
-firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <Provider store={store}>
